@@ -143,7 +143,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\learnOpenGL\glad.c" />
+    <ClCompile Include="fast_obj.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="RenderableObject.cpp" />
+    <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="stb_image.cpp" />
+    <ClCompile Include="Texture.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="fast_obj.h" />
+    <ClInclude Include="RenderableObject.h" />
+    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="Texture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
