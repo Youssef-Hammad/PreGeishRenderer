@@ -20,7 +20,7 @@ public:
 	unsigned int VAO;
 	unsigned int VBO;
 
-	std::vector<Texture> textures;
+	std::vector<Texture*> textures;
 	std::vector<std::pair<int, int> > texture_order; // each pair contains the number of consecutive vertices (first int) and the texture index they use (second int)
 
 

@@ -27,7 +27,7 @@ public:
 
 	Material material;
 
-	Texture(std::string path,glm::vec3 amb, glm::vec3 diff, glm::vec3 spec, float shine);
+	Texture(const char* path,glm::vec3 amb, glm::vec3 diff, glm::vec3 spec, float shine);
 	void bind();
 	void unbind();
 };

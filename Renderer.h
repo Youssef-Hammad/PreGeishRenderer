@@ -12,10 +12,11 @@ class Renderer
 {
 public:
 	GLFWwindow* window;
-	//std::vector<RenderableObject> objects;
+	std::vector<RenderableObject*> objects;
 
 	Renderer(int width, int height, std::string name);
 	void render_scene();
+	void AddObj(std::string path);
 
 
 	~Renderer();

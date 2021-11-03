@@ -2,7 +2,7 @@
 
 GLenum Texture::current_texture_number = GL_TEXTURE0;
 
-Texture::Texture(std::string path, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec, float shine)
+Texture::Texture(const char* path, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec, float shine)
 {
 	material = { amb,diff,spec,shine };
 

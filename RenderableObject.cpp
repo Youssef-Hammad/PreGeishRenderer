@@ -94,7 +94,12 @@ void RenderableObject::load_textures()
 
 	for (int i = 0; i < mesh->material_count; i++)
 	{
+		glm::vec3 ambient = glm::vec3(mesh->materials[i].Ka[0], mesh->materials[i].Ka[1], mesh->materials[i].Ka[2]);
+		glm::vec3 diffuse = glm::vec3(mesh->materials[i].Kd[0], mesh->materials[i].Kd[1], mesh->materials[i].Kd[2]);
+		glm::vec3 specular = glm::vec3(mesh->materials[i].Ks[0], mesh->materials[i].Ks[1], mesh->materials[i].Ks[2]);
 
+		Texture* temp = new Texture(mesh->materials[i].map_Kd.path, ambient, diffuse, specular, mesh->materials[i].Ns);
+		textures.push_back(temp);
 	}
 }
 

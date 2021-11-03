@@ -21,6 +21,12 @@ void Renderer::render_scene()
 	}*/
 }
 
+void Renderer::AddObj(std::string path)
+{
+	RenderableObject* object = new RenderableObject(path);
+	objects.push_back(object);
+}
+
 Renderer::~Renderer()
 {
 	glfwTerminate();
