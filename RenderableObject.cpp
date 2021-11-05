@@ -121,12 +121,21 @@ RenderableObject::RenderableObject(std::string path)
 
 	glBufferData(0, temp_vertices_size * sizeof(float), vertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride_size * sizeof(float), (void*)0); // vertex position
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride_size * sizeof(float), (void*)(3 * sizeof(float))); // vertex texture coordinates
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride_size * sizeof(float), (void*)(5 * sizeof(float))); // vertex normal
-	glEnableVertexAttribArray(2);
+	if (mesh->position_count)
+	{
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride_size * sizeof(float), (void*)0); // vertex position
+		glEnableVertexAttribArray(0);
+	}
+	if (mesh->texcoord_count)
+	{
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride_size * sizeof(float), (void*)(3 * sizeof(float))); // vertex texture coordinates
+		glEnableVertexAttribArray(1);
+	}
+	if (mesh->normal_count)
+	{
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride_size * sizeof(float), (void*)(5 * sizeof(float))); // vertex normal
+		glEnableVertexAttribArray(2);
+	}
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -135,6 +144,12 @@ RenderableObject::RenderableObject(std::string path)
 
 void RenderableObject::draw()
 {
+	int temp_current_vertix = 0;
+	for (int i = 0; i < texture_order.size(); i++)
+	{
+
+	}
+
 }
 
 RenderableObject::~RenderableObject()
