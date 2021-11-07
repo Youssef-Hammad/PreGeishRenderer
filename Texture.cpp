@@ -2,9 +2,9 @@
 
 GLenum Texture::current_texture_number = GL_TEXTURE0;
 
-Texture::Texture(const char* path, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec, float shine)
+Texture::Texture(const char* path, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec, float shine, int illum)
 {
-	material = { amb,diff,spec,shine };
+	material = { amb,diff,spec,illum,shine };
 
 	glGenTextures(1, &ID);
 	texture_number = current_texture_number;
@@ -20,7 +20,7 @@ Texture::Texture(const char* path, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	int width, height, nrChannels;
-	unsigned char* image_data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
+	unsigned char* image_data = stbi_load(path, &width, &height, &nrChannels, 0);
 	// if loaded successfully
 	if (image_data)
 	{

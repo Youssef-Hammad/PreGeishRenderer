@@ -13,6 +13,7 @@ struct Material
 	glm::vec3 ambient;
 	glm::vec3 diffuse;
 	glm::vec3 specular;
+	int illuminationModel; //1 indicates diffuse, 2 indicates specular
 	float shininess;
 };
 
@@ -27,7 +28,7 @@ public:
 
 	Material material;
 
-	Texture(const char* path,glm::vec3 amb, glm::vec3 diff, glm::vec3 spec, float shine);
+	Texture(const char* path,glm::vec3 amb, glm::vec3 diff, glm::vec3 spec, float shine, int illum);
 	void bind();
 	void unbind();
 };
