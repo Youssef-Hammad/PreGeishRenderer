@@ -14,7 +14,7 @@ uniform mat4 projection;
 void main()
 {
 	gl_Position = projection*view*model*vec4(inPos,1.0);
-	FragPos = vec3(model*vec4(inPos,1.0)); //Store fragment position with respect to world space
+	FragPos = vec3(view*model*vec4(inPos,1.0)); //Store fragment position with respect to view space so the viewPos is (0,0,0)
 	TexCoord = inTexCoord;
-	Normal = vec3(model*vec4(inNormal,1.0)); //Move normal to world space coordinates
+	Normal = vec3(view*model*vec4(inNormal,1.0)); //Move normal to view space coordinates
 }
