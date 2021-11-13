@@ -144,10 +144,14 @@
   <ItemGroup>
     <ClCompile Include="..\learnOpenGL\glad.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ObjectFragmentShader.frag" />
     <None Include="ObjectVertexShader.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Shader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
