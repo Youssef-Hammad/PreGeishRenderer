@@ -69,10 +69,11 @@ void RenderableObject::load_vertices()
 		//std::cout << vertices[i] << " " << vertices[i + 1] << " " << vertices[i + 2] << std::endl;
 }
 
-RenderableObject::RenderableObject(std::string path, Shader* _shaderProgram)
+RenderableObject::RenderableObject(std::string path, Shader* _shaderProgram, glm::vec3 position)
 {
 	//Initializations
 
+	Position = position;
 	mesh = fast_obj_read(path.c_str());
 	shaderProgram = _shaderProgram;
 	vertices_size = 0;
@@ -100,6 +101,10 @@ void RenderableObject::draw()
 {
 	glBindVertexArray(VAO);
 	shaderProgram->SetActive();
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::translate(model, Position);
+	model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.3f, 0.5f));
+	shaderProgram->setMat4("model", model);
 	glDrawArrays(GL_TRIANGLES, 0, vertices_size * 3);
 }
 

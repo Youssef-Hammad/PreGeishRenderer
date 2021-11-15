@@ -147,6 +147,7 @@
     <ClCompile Include="fast_obj.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RenderableObject.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="stb_image.cpp" />
   </ItemGroup>
@@ -158,6 +159,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="fast_obj.h" />
     <ClInclude Include="RenderableObject.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
