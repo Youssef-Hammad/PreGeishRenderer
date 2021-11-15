@@ -4,13 +4,16 @@
 
 #include "fast_obj.h"
 #include "Shader.h"
+#include "Texture.h"
 #include <glm/glm/gtc/matrix_transform.hpp>
 #include <iostream>
+#include <vector>
 
 class RenderableObject
 {
 private:
 	void load_vertices();
+	void load_textures();
 public:
 	fastObjMesh* mesh;
 	float* vertices;
@@ -19,6 +22,8 @@ public:
 	unsigned int VBO;
 	Shader* shaderProgram;
 	glm::vec3 Position;
+	std::vector<Texture*> textures;
+	std::vector<std::pair<int, int> > texture_order; // each pair contains the number of consecutive vertices (first int) and the texture index they use (second int)
 
 	RenderableObject(std::string path, Shader* _shaderProgram, glm::vec3 position);
 

@@ -74,6 +74,12 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 int main()
 {
 
+	if (!renderer.initSuccess)
+	{
+		std::cout << "Failed to initialize renderer" << std::endl;
+		return -1;
+	}
+
 	glfwSetKeyCallback(renderer.window, key_callback);
 	glfwSetCursorPosCallback(renderer.window, mouse_callback);
 	glfwSetScrollCallback(renderer.window, scroll_callback);

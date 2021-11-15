@@ -12,7 +12,7 @@ void RenderableObject::load_vertices()
 	}
 
 	//Calculating the total number of floats in the vertices array (the ternary operations multiply the number of vertices with the number of floats per single vertix
-	int temp_vertices_size = vertices_size*3; //vertices_size * ((mesh->position_count ? 3 : 1) + (mesh->texcoord_count ? 2 : 1) + (mesh->normal_count ? 3 : 1));
+	int temp_vertices_size = vertices_size*5; //vertices_size * ((mesh->position_count ? 3 : 1) + (mesh->texcoord_count ? 2 : 1) + (mesh->normal_count ? 3 : 1));
 	vertices = new float[temp_vertices_size];
 
 	int indicies_idx = 0;
@@ -35,10 +35,10 @@ void RenderableObject::load_vertices()
 				vertices[current_vertices_idx++] = mesh->positions[position_offset * mesh->indices[indicies_idx].p + 1];
 				vertices[current_vertices_idx++] = mesh->positions[position_offset * mesh->indices[indicies_idx].p + 2];
 
-				/*vertices[current_vertices_idx++] = mesh->texcoords[texture_offset * mesh->indices[indicies_idx].t];
+				vertices[current_vertices_idx++] = mesh->texcoords[texture_offset * mesh->indices[indicies_idx].t];
 				vertices[current_vertices_idx++] = mesh->texcoords[texture_offset * mesh->indices[indicies_idx].t + 1];
 
-				vertices[current_vertices_idx++] = mesh->normals[normal_offset * mesh->indices[indicies_idx].n];
+				/*vertices[current_vertices_idx++] = mesh->normals[normal_offset * mesh->indices[indicies_idx].n];
 				vertices[current_vertices_idx++] = mesh->normals[normal_offset * mesh->indices[indicies_idx].n + 1];
 				vertices[current_vertices_idx++] = mesh->normals[normal_offset * mesh->indices[indicies_idx].n + 2];*/
 			}
@@ -55,10 +55,10 @@ void RenderableObject::load_vertices()
 				vertices[current_vertices_idx++] = mesh->positions[position_offset * mesh->indices[temp_indicies_idx].p + 1];
 				vertices[current_vertices_idx++] = mesh->positions[position_offset * mesh->indices[temp_indicies_idx].p + 2];
 
-				/*vertices[current_vertices_idx++] = mesh->texcoords[texture_offset * mesh->indices[temp_indicies_idx].t];
+				vertices[current_vertices_idx++] = mesh->texcoords[texture_offset * mesh->indices[temp_indicies_idx].t];
 				vertices[current_vertices_idx++] = mesh->texcoords[texture_offset * mesh->indices[temp_indicies_idx].t + 1];
 
-				vertices[current_vertices_idx++] = mesh->normals[normal_offset * mesh->indices[temp_indicies_idx].n];
+				/*vertices[current_vertices_idx++] = mesh->normals[normal_offset * mesh->indices[temp_indicies_idx].n];
 				vertices[current_vertices_idx++] = mesh->normals[normal_offset * mesh->indices[temp_indicies_idx].n + 1];
 				vertices[current_vertices_idx++] = mesh->normals[normal_offset * mesh->indices[temp_indicies_idx].n + 2];*/
 			}
@@ -67,6 +67,41 @@ void RenderableObject::load_vertices()
 	}
 	//for (int i = 0; i < temp_vertices_size; i += 3)
 		//std::cout << vertices[i] << " " << vertices[i + 1] << " " << vertices[i + 2] << std::endl;
+}
+
+void RenderableObject::load_textures()
+{
+	int vertices_using_current_texture = 0;
+	int current_texture_idx = -1;
+
+	for (int i = 0; i < mesh->face_count; i++)
+	{
+		//first iteration
+		if (current_texture_idx == -1)
+			current_texture_idx = mesh->face_materials[i];
+		else if (current_texture_idx != mesh->face_materials[i])
+		{
+			texture_order.push_back({ vertices_using_current_texture, current_texture_idx });
+			vertices_using_current_texture = 0;
+			current_texture_idx = mesh->face_materials[i];
+		}
+		if (mesh->face_vertices[i] == 3)
+			vertices_using_current_texture += 3;
+		else if (mesh->face_vertices[i] == 4)
+			vertices_using_current_texture += 6;
+	}
+	texture_order.push_back({ vertices_using_current_texture, current_texture_idx });
+
+	for (int i = 0; i < mesh->material_count; i++)
+	{
+		//glm::vec3 ambient = glm::vec3(mesh->materials[i].Ka[0], mesh->materials[i].Ka[1], mesh->materials[i].Ka[2]);
+		//glm::vec3 diffuse = glm::vec3(mesh->materials[i].Kd[0], mesh->materials[i].Kd[1], mesh->materials[i].Kd[2]);
+		//glm::vec3 specular = glm::vec3(mesh->materials[i].Ks[0], mesh->materials[i].Ks[1], mesh->materials[i].Ks[2]);
+
+		Texture* temp = new Texture(mesh->materials[i].map_Kd.path);
+		textures.push_back(temp);
+	}
+	std::cout << "TextureCnt: " << textures.size() << std::endl;
 }
 
 RenderableObject::RenderableObject(std::string path, Shader* _shaderProgram, glm::vec3 position)
@@ -80,16 +115,20 @@ RenderableObject::RenderableObject(std::string path, Shader* _shaderProgram, glm
 
 
 	load_vertices();
+	load_textures();
 	
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, vertices_size * 3 * sizeof(float), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices_size * 5 * sizeof(float), vertices, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -101,13 +140,28 @@ void RenderableObject::draw()
 {
 	glBindVertexArray(VAO);
 	shaderProgram->SetActive();
+	int vertices_cnt = 0;
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, Position);
 	model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.3f, 0.5f));
 	shaderProgram->setMat4("model", model);
-	glDrawArrays(GL_TRIANGLES, 0, vertices_size * 3);
+	for (int i = 0; i < texture_order.size(); i++)
+	{
+		shaderProgram->setInt("texture1", texture_order[i].second);
+		textures[texture_order[i].second]->bind();
+		std::cout << textures[texture_order[i].second]->texture_number << std::endl;
+		glDrawArrays(GL_TRIANGLES, vertices_cnt, texture_order[i].first);
+		vertices_cnt += texture_order[i].first;
+		textures[texture_order[i].second]->unbind();
+	}
+	//glDrawArrays(GL_TRIANGLES, 0, vertices_size * 3);
+	glBindVertexArray(0);
 }
 
 RenderableObject::~RenderableObject()
 {
+	fast_obj_destroy(mesh);
+	delete[] vertices;
+	for (int i = 0; i < textures.size(); i++)
+		delete textures[i];
 }

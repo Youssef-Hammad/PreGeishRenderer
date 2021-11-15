@@ -78,6 +78,7 @@ Renderer::Renderer(int width, int height, std::string window_name)
 
 	camera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f));
 
+	stbi_set_flip_vertically_on_load(true);
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -103,6 +104,7 @@ Renderer::Renderer(int width, int height, std::string window_name)
 		initSuccess = false;
 		return;
 	}
+	initSuccess = true;
 
 	glViewport(0, 0, width, height);
 
@@ -135,6 +137,7 @@ void Renderer::render_scene()
 
 	for (int i = 0; i < objects.size(); i++)
 	{
+		std::cout << "Drawing" << std::endl;
 		objects[i]->draw();
 	}
 
