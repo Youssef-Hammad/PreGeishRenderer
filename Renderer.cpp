@@ -112,6 +112,11 @@ Renderer::Renderer(int width, int height, std::string window_name)
 	std::string objectFragPath = "C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\ObjectFragmentShader.frag";
 
 	objectShaderProgram = new Shader(objectVertPath, objectFragPath);
+	objectShaderProgram->SetActive();
+	objectShaderProgram->setVec3("dirLight.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
+	objectShaderProgram->setVec3("dirLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+	objectShaderProgram->setVec3("dirLight.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
+	objectShaderProgram->setVec3("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -124,7 +129,7 @@ void Renderer::render_scene()
 	lastFrame = currentFrame;
 
 	processInput(window);
-	glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	objectShaderProgram->SetActive();
@@ -137,7 +142,7 @@ void Renderer::render_scene()
 
 	for (int i = 0; i < objects.size(); i++)
 	{
-		std::cout << "Drawing" << std::endl;
+		//std::cout << "Drawing" << std::endl;
 		objects[i]->draw();
 	}
 

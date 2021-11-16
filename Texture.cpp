@@ -1,7 +1,9 @@
 #include "Texture.h"
 
-Texture::Texture(std::string path)
+Texture::Texture(std::string path, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec, int illum, float shine)
 {
+	material = { amb,diff,spec,illum,shine };
+
 	glGenTextures(1, &ID);
 	texture_number = current_texture_number;
 	current_texture_number += 1;
