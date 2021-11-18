@@ -113,9 +113,9 @@ Renderer::Renderer(int width, int height, std::string window_name)
 
 	objectShaderProgram = new Shader(objectVertPath, objectFragPath);
 	objectShaderProgram->SetActive();
-	objectShaderProgram->setVec3("dirLight.direction", glm::vec3(-0.2f, -1.0f, -0.3f));
+	objectShaderProgram->setVec3("dirLight.direction", glm::vec3(-0.2f, -1.0f, -1.0f));
 	objectShaderProgram->setVec3("dirLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
-	objectShaderProgram->setVec3("dirLight.diffuse", glm::vec3(0.5f, 0.5f, 0.5f));
+	objectShaderProgram->setVec3("dirLight.diffuse", glm::vec3(0.9f, 0.9f, 0.9f));
 	objectShaderProgram->setVec3("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
 	glEnable(GL_DEPTH_TEST);
@@ -129,7 +129,7 @@ void Renderer::render_scene()
 	lastFrame = currentFrame;
 
 	processInput(window);
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.3f, 0.2f, 0.2f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	objectShaderProgram->SetActive();
@@ -139,6 +139,8 @@ void Renderer::render_scene()
 
 	glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)Width / (float)Height, 0.1f, 100.0f);
 	objectShaderProgram->setMat4("projection", projection);
+
+	objectShaderProgram->setVec3("viewPos", camera->Position);
 
 	for (int i = 0; i < objects.size(); i++)
 	{

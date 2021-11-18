@@ -16,6 +16,6 @@ void main()
 {
 	gl_Position = projection*view*model*vec4(inPos,1.0);
 	TexCoords = inTexCoords;
-	Normal = vec3(view*model*vec4(inNormal,1.0)); // Move normal to view space coordinates
-	FragPos = vec3(view*model*vec4(inPos,1.0)); // Move fragment position to view space so the viewPos is always (0,0,0) in the fragment shader
+	Normal = mat3(transpose(inverse(model)))*inNormal; // Move normal to world space coordinates
+	FragPos = vec3(model*vec4(inPos,1.0)); // Move fragment position to world space ................. (IRRELEVANT)so the viewPos is always (0,0,0) in the fragment shader
 }

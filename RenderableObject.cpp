@@ -155,12 +155,17 @@ void RenderableObject::draw()
 	for (int i = 0; i < texture_order.size(); i++)
 	{
 		//TODO: CHANGE TEXTURE BINDING TO COPE WITH THE NEW SHADER
-		shaderProgram->setInt("material.diffuse", texture_order[i].second);
-		/*if (textures[texture_order[i].second]->material.illumModel == 2)
+		shaderProgram->setInt("material.diffuseTex", texture_order[i].second);
+		shaderProgram->setVec3("material.ambient", textures[texture_order[i].second]->material.ambient);
+		shaderProgram->setVec3("material.diffuse", textures[texture_order[i].second]->material.diffuse);
+		shaderProgram->setVec3("material.specular", textures[texture_order[i].second]->material.specular);
+		shaderProgram->setFloat("material.shininess", textures[texture_order[i].second]->material.shininess);
+		//shaderProgram->setInt("material.specular", texture_order[i].second);
+		if (textures[texture_order[i].second]->material.illumModel == 2)
 		{
 			shaderProgram->setInt("material.specular", texture_order[i].second);
-			shaderProgram->setFloat("material.shininess", textures[texture_order[i].second]->material.shininess);
-		}*/
+			//shaderProgram->setFloat("material.shininess", textures[texture_order[i].second]->material.shininess);
+		}
 		//shaderProgram->setInt("texture1", texture_order[i].second);
 		textures[texture_order[i].second]->bind();
 		//std::cout << textures[texture_order[i].second]->texture_number << std::endl;
