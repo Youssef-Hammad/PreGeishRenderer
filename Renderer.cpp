@@ -75,6 +75,7 @@ Renderer::Renderer(int width, int height, std::string window_name)
 	wireframe = false;
 	deltaTime = 0.0f;
 	lastFrame = 0.0f;
+	currentTextureNumber = GL_TEXTURE0;
 
 	camera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f));
 

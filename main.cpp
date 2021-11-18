@@ -86,8 +86,8 @@ int main()
 
 	glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f);
 	renderer.AddObj("E:\\3D-Models\\RubiksCube\\rubikscube.obj", glm::vec3(0.0f, 0.0f, 0.0f));
-	//renderer.AddObj("E:\\3D-Models\\Antylamon Snow\\Antylamon Snow.obj", glm::vec3(0.0f, 0.0f, 0.0f));
-	//renderer.AddObj("E:\\3D-Models\\Digimon Tai\\Item1\\digimon-digital-monsters-tai.obj", glm::vec3(0.0f,0.0f,0.0f));
+	//renderer.AddObj("E:\\3D-Models\\Antylamon Snow\\Antylamon Snow.obj", glm::vec3(10.0f, 0.0f, 0.0f));
+	//renderer.AddObj("E:\\3D-Models\\Digimon Tai\\Item1\\digimon-digital-monsters-tai.obj", glm::vec3(0.0f,10.0f,0.0f));
 	//renderer.AddObj("E:\\3D-Models\\Electro Cicin Mage\\Electro Cicin Mage.obj", glm::vec3(0.0f, 0.0f, 0.0f));
 	//renderer.AddObj("E:\\3D-Models\\Wargreymon\\WarGreymon.obj", glm::vec3(0.0f, 0.0f, 0.0f));
 	//renderer.AddObj("E:\\3D-Models\\Kirby\\Kirby.obj", pos);

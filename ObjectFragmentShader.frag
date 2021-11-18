@@ -2,6 +2,8 @@
 
 struct Material
 {
+	bool renderDiffTexture;
+	bool renderSpecTexture;
 	sampler2D diffuseTex;
 	sampler2D specularTex;
 
@@ -34,6 +36,8 @@ uniform vec3 viewPos;
 
 vec3 calculateDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir);
 
+// TODOOOOOOOOOOOOOOO: return calculations to view space so I don't have to send viewPos in uniform
+
 void main()
 {
 	vec3 norm = normalize(Normal);
@@ -42,6 +46,7 @@ void main()
 	vec3 result = calculateDirectionalLight(dirLight, norm, viewDir);
 
 	FragColor = vec4(result,1.0);
+	//FragColor = texture(material.diffuseTex,TexCoords);
 }
 
 vec3 calculateDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir)

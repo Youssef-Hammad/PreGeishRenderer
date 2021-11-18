@@ -8,6 +8,8 @@ Texture::Texture(std::string path, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec
 	texture_number = current_texture_number;
 	current_texture_number += 1;
 
+	std::cout << "Texture Number & Static Texture Number: " << texture_number << " " << current_texture_number << std::endl;
+
 	glActiveTexture(texture_number);
 	glBindTexture(GL_TEXTURE_2D, ID);
 
@@ -23,12 +25,12 @@ Texture::Texture(std::string path, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, (nrChannels == 3 ? GL_RGB : GL_RGBA), GL_UNSIGNED_BYTE, image_data);
 		glGenerateMipmap(GL_TEXTURE_2D);
+		stbi_image_free(image_data);
 	}
 	else
 	{
 		std::cout << "Failed to load data" << std::endl;
 	}
-	stbi_image_free(image_data);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 }

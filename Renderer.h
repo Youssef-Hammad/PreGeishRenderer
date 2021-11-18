@@ -16,6 +16,7 @@ class Renderer
 {
 private:
 	Shader* objectShaderProgram;
+	GLenum currentTextureNumber;
 
 	void processInput(GLFWwindow* window);
 
