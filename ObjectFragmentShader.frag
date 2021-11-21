@@ -71,11 +71,11 @@ vec3 calculateDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir
 	// Then powered by material.shininess to determine how much the light on the reflected spot should be scattered (the higher shininess value the less scattered it will be)
 	
 	// This is to handle when Shininess is equal to 0
-//	float specularAngle;
-//	if(material.shininess == 0)
-//		specularAngle=1;
-//	else
-	float specularAngle = pow(max(dot(viewDir,reflectDir),0.0),material.shininess);
+	float specularAngle;
+	if(material.shininess == 0)
+		specularAngle=1;
+	else
+		specularAngle = pow(max(dot(viewDir,reflectDir),0.0),material.shininess);
 	specular = ((light.specular*specularAngle)*material.specular)*vec3(texture(material.specularTex,TexCoords)).rgb;
 
 
