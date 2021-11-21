@@ -2,44 +2,85 @@
 #include <GLFW/glfw3.h>
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include "Shader.h"
+#include "RenderableObject.h"
+#include "Camera.h"
+#include "Renderer.h"
 
 const unsigned int WINDOW_WIDTH = 800;
 const unsigned int WINDOW_HEIGHT = 600;
 
+Renderer renderer(WINDOW_WIDTH, WINDOW_HEIGHT, "Pre Geish Renderer");
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	if (key == GLFW_KEY_P && action == GLFW_PRESS)
+	{
+		if (!renderer.wireframe)
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			renderer.wireframe = true;
+		}
+		else
+		{
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+			renderer.wireframe = false;
+		}
+	}
+}
+
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	if (renderer.firstMouseMove)
+	{
+		renderer.lastX = xpos;
+		renderer.lastY = ypos;
+		renderer.firstMouseMove = false;
+	}
+
+	float xoffset = xpos - renderer.lastX;
+	float yoffset = renderer.lastY - ypos;
+
+	renderer.lastX = xpos;
+	renderer.lastY = ypos;
+
+	renderer.camera->Process_Mouse_Movement(xoffset, yoffset);
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	renderer.camera->Process_Mouse_Scroll(yoffset);
+}
+
 int main()
 {
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	GLFWwindow* window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Pre Geish Renderer", NULL, NULL);
-
-	if (window == NULL)
+	if (!renderer.initSuccess)
 	{
-		std::cout << "Failed to create window" << std::endl;
-		glfwTerminate();
+		std::cout << "Failed to initialize renderer" << std::endl;
 		return -1;
 	}
 
-	glfwMakeContextCurrent(window);
+	glfwSetKeyCallback(renderer.window, key_callback);
+	glfwSetCursorPosCallback(renderer.window, mouse_callback);
+	glfwSetScrollCallback(renderer.window, scroll_callback);
 
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f);
+	renderer.AddObj("E:\\3D-Models\\RubiksCube\\rubikscube.obj", glm::vec3(0.0f, 0.0f, 0.0f));
+	renderer.AddObj("E:\\3D-Models\\Antylamon Snow\\Antylamon Snow.obj", glm::vec3(3.0f, 0.0f, 0.0f));
+	renderer.AddObj("E:\\3D-Models\\Digimon Tai\\Item1\\digimon-digital-monsters-tai.obj", glm::vec3(6.0f,0.0f,0.0f));
+	renderer.AddObj("E:\\3D-Models\\Electro Cicin Mage\\Electro Cicin Mage.obj", glm::vec3(10.0f, 0.0f, 0.0f));
+	renderer.AddObj("E:\\3D-Models\\Wargreymon\\WarGreymon.obj", glm::vec3(14.0f, 0.0f, 0.0f));
+	//renderer.AddObj("E:\\3D-Models\\Kirby\\Kirby.obj", pos);
+	renderer.AddObj("E:\\3D-Models\\Kirby Trophy\\Kirby.obj", glm::vec3(-10.0f,0.0f,0.0f));
+
+	while (!glfwWindowShouldClose(renderer.window))
 	{
-		std::cout << "Failed to load GLAD!" << std::endl;
-		glfwTerminate();
-		return -1;
-	}
 
-	glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-
-	while (!glfwWindowShouldClose(window))
-	{
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		glfwSwapBuffers(window);
-		glfwPollEvents();
+		renderer.render_scene();
 	}
 
 	glfwTerminate();
