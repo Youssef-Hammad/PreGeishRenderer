@@ -16,6 +16,8 @@ void main()
 {
 	gl_Position = projection*view*model*vec4(inPos,1.0);
 	TexCoords = inTexCoords;
+
+	// The transpose(inverse()) part is to correctly calculate the normal coordinates even when a non-uniform scaling occurs. (I don't fully understand the math behind it)
 	Normal = mat3(transpose(inverse(model)))*inNormal; // Move normal to world space coordinates
-	FragPos = vec3(model*vec4(inPos,1.0)); // Move fragment position to world space ................. (IRRELEVANT)so the viewPos is always (0,0,0) in the fragment shader
+	FragPos = vec3(model*vec4(inPos,1.0)); // Move fragment position to world space
 }

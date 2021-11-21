@@ -31,22 +31,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 }
 
-void processInput(GLFWwindow* window)
-{
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
-
-	float cameraSpeed = 2.5f * renderer.deltaTime;
-
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		renderer.camera->Process_Keyboard(FORWARD, cameraSpeed);
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		renderer.camera->Process_Keyboard(BACKWARD, cameraSpeed);
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		renderer.camera->Process_Keyboard(RIGHT, cameraSpeed);
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		renderer.camera->Process_Keyboard(LEFT, cameraSpeed);
-}
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
@@ -86,12 +70,12 @@ int main()
 
 	glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f);
 	renderer.AddObj("E:\\3D-Models\\RubiksCube\\rubikscube.obj", glm::vec3(0.0f, 0.0f, 0.0f));
-	//renderer.AddObj("E:\\3D-Models\\Antylamon Snow\\Antylamon Snow.obj", glm::vec3(10.0f, 0.0f, 0.0f));
-	//renderer.AddObj("E:\\3D-Models\\Digimon Tai\\Item1\\digimon-digital-monsters-tai.obj", glm::vec3(0.0f,10.0f,0.0f));
-	//renderer.AddObj("E:\\3D-Models\\Electro Cicin Mage\\Electro Cicin Mage.obj", glm::vec3(0.0f, 0.0f, 0.0f));
-	//renderer.AddObj("E:\\3D-Models\\Wargreymon\\WarGreymon.obj", glm::vec3(0.0f, 0.0f, 0.0f));
+	renderer.AddObj("E:\\3D-Models\\Antylamon Snow\\Antylamon Snow.obj", glm::vec3(3.0f, 0.0f, 0.0f));
+	renderer.AddObj("E:\\3D-Models\\Digimon Tai\\Item1\\digimon-digital-monsters-tai.obj", glm::vec3(6.0f,0.0f,0.0f));
+	renderer.AddObj("E:\\3D-Models\\Electro Cicin Mage\\Electro Cicin Mage.obj", glm::vec3(10.0f, 0.0f, 0.0f));
+	renderer.AddObj("E:\\3D-Models\\Wargreymon\\WarGreymon.obj", glm::vec3(14.0f, 0.0f, 0.0f));
 	//renderer.AddObj("E:\\3D-Models\\Kirby\\Kirby.obj", pos);
-	//renderer.AddObj("E:\\3D-Models\\Kirby Trophy\\Kirby.obj", pos);
+	renderer.AddObj("E:\\3D-Models\\Kirby Trophy\\Kirby.obj", glm::vec3(-10.0f,0.0f,0.0f));
 
 	while (!glfwWindowShouldClose(renderer.window))
 	{

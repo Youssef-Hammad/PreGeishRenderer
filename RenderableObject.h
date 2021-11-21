@@ -22,7 +22,7 @@ public:
 	unsigned int VBO;
 	Shader* shaderProgram;
 	glm::vec3 Position;
-	std::vector<Texture*> textures;
+	std::vector<Texture> textures;
 	std::vector<std::pair<int, int> > texture_order; // each pair contains the number of consecutive vertices (first int) and the texture index they use (second int)
 
 	RenderableObject(std::string path, Shader* _shaderProgram, glm::vec3 position);

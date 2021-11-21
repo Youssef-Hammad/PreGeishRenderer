@@ -30,8 +30,9 @@ void Renderer::processInput(GLFWwindow* window)
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 
-	float cameraSpeed = 2.5f * deltaTime;
-
+	float cameraSpeed = 1.5f * deltaTime;
+	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+		cameraSpeed = deltaTime * 0.6;
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera->Process_Keyboard(FORWARD, cameraSpeed);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -77,7 +78,7 @@ Renderer::Renderer(int width, int height, std::string window_name)
 	lastFrame = 0.0f;
 	currentTextureNumber = GL_TEXTURE0;
 
-	camera = new Camera(glm::vec3(0.0f, 0.0f, 3.0f));
+	camera = new Camera(glm::vec3(0.0f, 2.0f, 6.0f));
 
 	stbi_set_flip_vertically_on_load(true);
 	glfwInit();

@@ -17,10 +17,12 @@ void RenderableObject::load_vertices()
 
 	int indicies_idx = 0;
 
+	
 	const int position_offset = 3;
 	const int texture_offset = 2;
 	const int normal_offset = 3;
 
+	// counter to keep track if the current index in array "vertices"
 	int current_vertices_idx = 0;
 
 	for (int i = 0; i < mesh->face_count; i++)
@@ -98,7 +100,7 @@ void RenderableObject::load_textures()
 		glm::vec3 diffuse = glm::vec3(mesh->materials[i].Kd[0], mesh->materials[i].Kd[1], mesh->materials[i].Kd[2]);
 		glm::vec3 specular = glm::vec3(mesh->materials[i].Ks[0], mesh->materials[i].Ks[1], mesh->materials[i].Ks[2]);
 
-		Texture* temp = new Texture(mesh->materials[i].map_Kd.path,ambient,diffuse,specular,mesh->materials[i].illum,mesh->materials[i].Ns);
+		Texture temp((GL_TEXTURE0+i),mesh->materials[i].map_Kd.path,ambient,diffuse,specular,mesh->materials[i].illum,mesh->materials[i].Ns);
 		textures.push_back(temp);
 	}
 	std::cout << "TextureCnt: " << textures.size() << std::endl;
@@ -150,29 +152,29 @@ void RenderableObject::draw()
 	int vertices_cnt = 0;
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, Position);
-	model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.3f, 0.5f));
+	//model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.3f, 0.5f));
 	shaderProgram->setMat4("model", model);
 	for (int i = 0; i < texture_order.size(); i++)
 	{
 		//TODO: CHANGE TEXTURE BINDING TO COPE WITH THE NEW SHADER
-		if(textures[texture_order[i].second]->material.illumModel == 1)
-			shaderProgram->setInt("material.diffuseTex", texture_order[i].second);
-		shaderProgram->setVec3("material.ambient", textures[texture_order[i].second]->material.ambient);
-		shaderProgram->setVec3("material.diffuse", textures[texture_order[i].second]->material.diffuse);
-		shaderProgram->setVec3("material.specular", textures[texture_order[i].second]->material.specular);
-		shaderProgram->setFloat("material.shininess", textures[texture_order[i].second]->material.shininess);
+		//if(textures[texture_order[i].second]->material.illumModel == 1)
+		textures[texture_order[i].second].bind();
+		shaderProgram->setInt("material.diffuseTex", texture_order[i].second);
+		shaderProgram->setVec3("material.ambient", textures[texture_order[i].second].material.ambient);
+		shaderProgram->setVec3("material.diffuse", textures[texture_order[i].second].material.diffuse);
+		shaderProgram->setVec3("material.specular", textures[texture_order[i].second].material.specular);
+		shaderProgram->setFloat("material.shininess", textures[texture_order[i].second].material.shininess);
 		//shaderProgram->setInt("material.specular", texture_order[i].second);
-		if (textures[texture_order[i].second]->material.illumModel == 2)
+		if (textures[texture_order[i].second].material.illumModel == 2)
 		{
-			shaderProgram->setInt("material.specular", texture_order[i].second);
+			shaderProgram->setInt("material.specularTex", texture_order[i].second);
 			//shaderProgram->setFloat("material.shininess", textures[texture_order[i].second]->material.shininess);
 		}
 		//shaderProgram->setInt("texture1", texture_order[i].second);
-		textures[texture_order[i].second]->bind();
 		//std::cout << textures[texture_order[i].second]->texture_number << std::endl;
 		glDrawArrays(GL_TRIANGLES, vertices_cnt, texture_order[i].first);
 		vertices_cnt += texture_order[i].first;
-		textures[texture_order[i].second]->unbind();
+		textures[texture_order[i].second].unbind();
 	}
 	//glDrawArrays(GL_TRIANGLES, 0, vertices_size * 3);
 	glBindVertexArray(0);
@@ -182,8 +184,7 @@ RenderableObject::~RenderableObject()
 {
 	fast_obj_destroy(mesh);
 	delete[] vertices;
-	for (int i = 0; i < textures.size(); i++)
-		delete textures[i];
+	
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 }

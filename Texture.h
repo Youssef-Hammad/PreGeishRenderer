@@ -17,17 +17,15 @@ struct Material
 	float shininess; //Ns
 };
 
-static GLenum current_texture_number = GL_TEXTURE0;
-
 class Texture
 {
 public:
 	unsigned int ID;
-	std::string path;
+	std::string texPath;
 	GLenum texture_number;
 	Material material;
 
-	Texture(std::string path, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec, int illum, float shine);
+	Texture(GLenum TextureNumber, std::string path, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec, int illum, float shine);
 	void bind();
 	void unbind();
 };

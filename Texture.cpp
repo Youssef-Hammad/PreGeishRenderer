@@ -1,14 +1,14 @@
 #include "Texture.h"
 
-Texture::Texture(std::string path, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec, int illum, float shine)
+Texture::Texture(GLenum TextureNumber, std::string path, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec, int illum, float shine)
 {
 	material = { amb,diff,spec,illum,shine };
 
 	glGenTextures(1, &ID);
-	texture_number = current_texture_number;
-	current_texture_number += 1;
+	texture_number = TextureNumber;
+	texPath = path;
 
-	std::cout << "Texture Number & Static Texture Number: " << texture_number << " " << current_texture_number << std::endl;
+	//std::cout << "Texture Number & Static Texture Number: " << texture_number << " " << current_texture_number << std::endl;
 
 	glActiveTexture(texture_number);
 	glBindTexture(GL_TEXTURE_2D, ID);
