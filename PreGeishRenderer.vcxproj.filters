@@ -42,12 +42,21 @@
     <ClCompile Include="Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ObjectVertexShader.vert">
       <Filter>Source Files</Filter>
     </None>
     <None Include="ObjectFragmentShader.frag">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="TerrainVertexShader.vert">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="TerrainFragmentShader.frag">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
@@ -71,6 +80,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

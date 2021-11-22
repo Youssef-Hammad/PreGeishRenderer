@@ -70,7 +70,8 @@ vec3 calculateDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir
 	// Calculates the angle between viewDir and the direction of reflected light (reflectDir)
 	// Then powered by material.shininess to determine how much the light on the reflected spot should be scattered (the higher shininess value the less scattered it will be)
 	
-	// This is to handle when Shininess is equal to 0
+	// This is to handle when Shininess is equal to 0.
+	// Reason for this handling is that GLSL's pow produces undefined result when the base <= 0 and power <= 0
 	float specularAngle;
 	if(material.shininess == 0)
 		specularAngle=1;
