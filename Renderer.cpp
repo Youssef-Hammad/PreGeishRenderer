@@ -195,6 +195,6 @@ void Renderer::AddObj(std::string path, glm::vec3 pos)
 
 void Renderer::AddTerrain()
 {
-	Terrain* terrain = new Terrain(0,0,"C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\test_resources\\grass.png",terrainShaderProgram);
+	Terrain* terrain = new Terrain(0,0,"C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\test_resources\\grass.png",terrainShaderProgram,"C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\test_resources\\JnBQ0y9Q.png");
 	terrains.push_back(terrain);
 }

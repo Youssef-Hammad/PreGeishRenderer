@@ -1,16 +1,27 @@
 #include "Terrain.h"
 
-Terrain::Terrain(int gridX, int gridZ, std::string _texturePath, Shader* _shaderProgram)
+Terrain::Terrain(int gridX, int gridZ, std::string _texturePath, Shader* _shaderProgram, std::string heightMapPath)
 {
 	x = gridX * SIZE;
 	z = gridZ * SIZE;
-	texture = new Texture(GL_TEXTURE0, _texturePath, glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f), 2, 8);
+	texture = new Texture(GL_TEXTURE0, _texturePath, glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f), 2, 0);
 	shaderProgram = _shaderProgram;
-	generateTerrain();
+	generateTerrain(heightMapPath);
 }
 
-void Terrain::generateTerrain()
+void Terrain::generateTerrain(std::string heightMapPath)
 {
+	int width, height, nrChannels;
+	unsigned char* image = stbi_load(heightMapPath.c_str(), &width, &height, &nrChannels, 0);
+	if (!image)
+	{
+		std::cout << "Failed to load height map" << std::endl;
+		return;
+	}
+
+	int VERTEX_COUNT = height;
+	std::cout << "Height: " << height << " Width: " << width << std::endl;
+
 	int count = VERTEX_COUNT * VERTEX_COUNT;
 
 	float* positions = new float[count * 3];
@@ -24,12 +35,13 @@ void Terrain::generateTerrain()
 		for (int j = 0; j < VERTEX_COUNT; j++)
 		{
 			positions[vertIdx * 3] = (float)j / ((float)VERTEX_COUNT - 1) * SIZE;
-			positions[vertIdx * 3 + 1] = 0;
+			positions[vertIdx * 3 + 1] = getHeight(j, i, width, height, image);
 			positions[vertIdx * 3 + 2] = (float)i / ((float)VERTEX_COUNT - 1) * SIZE;
 
-			normals[vertIdx * 3] = 0;
-			normals[vertIdx * 3 + 1] = 1;
-			normals[vertIdx * 3 + 2] = 0;
+			glm::vec3 normal = calculateNormal(j, i, width, height, image);
+			normals[vertIdx * 3] = normal.x;
+			normals[vertIdx * 3 + 1] = normal.y;
+			normals[vertIdx * 3 + 2] = normal.z;
 
 			texCoords[vertIdx * 2] = (float)j / ((float)VERTEX_COUNT - 1);
 			texCoords[vertIdx * 2 + 1] = (float)i / ((float)VERTEX_COUNT - 1);
@@ -100,6 +112,39 @@ void Terrain::generateTerrain()
 
 }
 
+glm::vec3 Terrain::calculateNormal(int x, int z, int imgWidth, int imgHeight, unsigned char* image)
+{
+	float heightL = getHeight(x - 1, z, imgWidth, imgHeight, image);
+	float heightR = getHeight(x + 1, z, imgWidth, imgHeight, image);
+	float heightD = getHeight(x, z - 1, imgWidth, imgHeight, image);
+	float heightU = getHeight(x, z + 1, imgWidth, imgHeight, image);
+	glm::vec3 normal = glm::vec3(heightL - heightR, 2.0f, heightD - heightU);
+	normal = glm::normalize(normal);
+
+	return normal;
+}
+
+float Terrain::getHeight(int x, int y, int imgWidth, int imgHeight, unsigned char* image)
+{
+	if (x < 0 || x >= imgWidth || y < 0 || y >= imgHeight)
+		return 0;
+	float height = getRGB(x, y, image, imgHeight);
+
+	//makes height in range of [-1, 1]
+	height /= MAX_PIXEL_COLOUR / 2.0f;
+
+	//makes height in range of [-MAX_HEIGHT, MAX_HEIGHT]
+	height *= MAX_HEIGHT;
+
+	return height;
+}
+
+float Terrain::getRGB(int x, int y, unsigned char* image, int imgHeight)
+{
+	int idx = x * imgHeight * 3 + y * 3;
+	return float(image[idx]) * float(image[idx + 1]) * float(image[idx + 2]);
+}
+
 void Terrain::draw()
 {
 	shaderProgram->SetActive();
@@ -113,7 +158,7 @@ void Terrain::draw()
 	shaderProgram->setVec3("material.diffuse", texture->material.diffuse);
 	shaderProgram->setVec3("material.specular", texture->material.specular);
 	shaderProgram->setFloat("material.shininess", texture->material.shininess);
-	shaderProgram->setInt("material.specularTex", 0);
+	shaderProgram->setInt("material.specularTex", 1); //Will not sample from a specular map
 	glDrawArrays(GL_TRIANGLES, 0, verticesSize);
 	texture->unbind();
 	glBindVertexArray(0);

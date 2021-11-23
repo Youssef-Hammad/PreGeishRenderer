@@ -12,12 +12,12 @@ class Terrain
 {
 private:
 	const float SIZE = 800;
-	const int VERTEX_COUNT = 128;
+	const float MAX_HEIGHT = 40;
+	const float MAX_PIXEL_COLOUR = 256 * 256 * 256;
 
-	
-	//RenderableObject* terrainModel;
-	
-	void loadVAO();
+	float getHeight(int x,int y, int imgWidth, int imgHeight, unsigned char* image);
+	float getRGB(int x, int y, unsigned char* image, int imgHeight);
+	glm::vec3 calculateNormal(int x, int z, int imgWidth, int imgHeight, unsigned char* image);
 	
 
 public:
@@ -28,8 +28,8 @@ public:
 	float* vertices;
 	Texture* texture;
 	Shader* shaderProgram;
-	Terrain(int gridX, int gridZ, std::string _texturePath, Shader* _shaderProgram);
-	void generateTerrain();
+	Terrain(int gridX, int gridZ, std::string _texturePath, Shader* _shaderProgram, std::string heightMapPath);
+	void generateTerrain(std::string heightMapPath);
 	void draw();
 
 	~Terrain();
