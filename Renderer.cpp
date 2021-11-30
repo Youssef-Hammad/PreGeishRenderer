@@ -122,7 +122,8 @@ Renderer::Renderer(int width, int height, std::string window_name)
 	std::string objectFragPath = "C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\ObjectFragmentShader.frag";
 
 	std::string terrainVertPath = "C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\TerrainVertexShader.vert";
-	terrainShaderProgram = new Shader(terrainVertPath, objectFragPath);
+	std::string terrainFragPath = "C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\TerrainFragmentShader.frag";
+	terrainShaderProgram = new Shader(terrainVertPath, terrainFragPath);
 
 	objectShaderProgram = new Shader(objectVertPath, objectFragPath);
 	objectShaderProgram->SetActive();

@@ -35,7 +35,7 @@ void Terrain::generateTerrain(std::string heightMapPath)
 		for (int j = 0; j < VERTEX_COUNT; j++)
 		{
 			positions[vertIdx * 3] = (float)j / ((float)VERTEX_COUNT - 1) * SIZE;
-			positions[vertIdx * 3 + 1] = 0;//getHeight(j, i, width, height, image);
+			positions[vertIdx * 3 + 1] = getHeight(j, i, width, height, image);
 			positions[vertIdx * 3 + 2] = (float)i / ((float)VERTEX_COUNT - 1) * SIZE;
 
 			glm::vec3 normal = calculateNormal(j, i, width, height, image);
@@ -80,9 +80,9 @@ void Terrain::generateTerrain(std::string heightMapPath)
 		vertices[verticesIdx++] = texCoords[2 * indicies[i]];
 		vertices[verticesIdx++] = texCoords[2 * indicies[i] + 1];
 
-		vertices[verticesIdx++] = normals[2 * indicies[i]];
-		vertices[verticesIdx++] = normals[2 * indicies[i] + 1];
-		vertices[verticesIdx++] = normals[2 * indicies[i] + 2];
+		vertices[verticesIdx++] = normals[3 * indicies[i]];
+		vertices[verticesIdx++] = normals[3 * indicies[i] + 1];
+		vertices[verticesIdx++] = normals[3 * indicies[i] + 2];
 	}
 
 	glGenVertexArrays(1, &VAO);
@@ -118,8 +118,8 @@ glm::vec3 Terrain::calculateNormal(int x, int z, int imgWidth, int imgHeight, un
 	float heightR = getHeight(x + 1, z, imgWidth, imgHeight, image);
 	float heightD = getHeight(x, z - 1, imgWidth, imgHeight, image);
 	float heightU = getHeight(x, z + 1, imgWidth, imgHeight, image);
-	glm::vec3 normal = glm::vec3(/*heightL - heightR*/0.0f, 1.0f, 0.0f/*heightD - heightU*/);
-	//normal = glm::normalize(normal);
+	glm::vec3 normal = glm::vec3(heightL - heightR, 2.0f,heightD - heightU);
+	normal = glm::normalize(normal);
 
 	return normal;
 }
