@@ -20,7 +20,7 @@ void main()
 	//Once the coordinates go over 1.0 OpenGL starts again from 0.0 (more like the modulo concept)
 	//Therefore, it makes the fairly small texture get tiled multiple times over the terrain
 	//and thus looking better than having it stretched over the entire terrain
-	TexCoords = inTexCoords*100.0;
+	TexCoords = inTexCoords*400.0;
 
 	// The transpose(inverse()) part is to correctly calculate the normal coordinates even when a non-uniform scaling occurs. (I don't fully understand the math behind it)
 	Normal = mat3(transpose(inverse(model)))*inNormal; // Move normal to world space coordinates

@@ -20,7 +20,7 @@ void Terrain::generateTerrain(std::string heightMapPath)
 	}
 
 	int VERTEX_COUNT = height;
-	std::cout << "Height: " << height << " Width: " << width << std::endl;
+	std::cout << "Height: " << height << " Width: " << width << " Channels: " << nrChannels << std::endl;
 
 	int count = VERTEX_COUNT * VERTEX_COUNT;
 
@@ -35,7 +35,7 @@ void Terrain::generateTerrain(std::string heightMapPath)
 		for (int j = 0; j < VERTEX_COUNT; j++)
 		{
 			positions[vertIdx * 3] = (float)j / ((float)VERTEX_COUNT - 1) * SIZE;
-			positions[vertIdx * 3 + 1] = getHeight(j, i, width, height, image);
+			positions[vertIdx * 3 + 1] = 0;//getHeight(j, i, width, height, image);
 			positions[vertIdx * 3 + 2] = (float)i / ((float)VERTEX_COUNT - 1) * SIZE;
 
 			glm::vec3 normal = calculateNormal(j, i, width, height, image);
@@ -118,8 +118,8 @@ glm::vec3 Terrain::calculateNormal(int x, int z, int imgWidth, int imgHeight, un
 	float heightR = getHeight(x + 1, z, imgWidth, imgHeight, image);
 	float heightD = getHeight(x, z - 1, imgWidth, imgHeight, image);
 	float heightU = getHeight(x, z + 1, imgWidth, imgHeight, image);
-	glm::vec3 normal = glm::vec3(heightL - heightR, 2.0f, heightD - heightU);
-	normal = glm::normalize(normal);
+	glm::vec3 normal = glm::vec3(/*heightL - heightR*/0.0f, 1.0f, 0.0f/*heightD - heightU*/);
+	//normal = glm::normalize(normal);
 
 	return normal;
 }
@@ -127,8 +127,16 @@ glm::vec3 Terrain::calculateNormal(int x, int z, int imgWidth, int imgHeight, un
 float Terrain::getHeight(int x, int y, int imgWidth, int imgHeight, unsigned char* image)
 {
 	if (x < 0 || x >= imgWidth || y < 0 || y >= imgHeight)
+	{
+		//std::cout << "out of bounds" << std::endl;
 		return 0;
+	}
 	float height = getRGB(x, y, image, imgHeight);
+
+	//height += MAX_PIXEL_COLOUR / 2.0f;
+
+	if (height > MAX_PIXEL_COLOUR / 2.0f || height < MAX_PIXEL_COLOUR / -2.0f)
+		std::cout << "More than" << std::endl;
 
 	//makes height in range of [-1, 1]
 	height /= MAX_PIXEL_COLOUR / 2.0f;
@@ -141,7 +149,7 @@ float Terrain::getHeight(int x, int y, int imgWidth, int imgHeight, unsigned cha
 
 float Terrain::getRGB(int x, int y, unsigned char* image, int imgHeight)
 {
-	int idx = x * imgHeight * 3 + y * 3;
+	int idx = 3*(y * imgHeight + x);
 	return float(image[idx]) * float(image[idx + 1]) * float(image[idx + 2]);
 }
 
