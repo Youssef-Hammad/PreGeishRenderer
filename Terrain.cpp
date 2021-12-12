@@ -144,7 +144,8 @@ float Terrain::getHeight(int x, int y, int imgWidth, int imgHeight, unsigned cha
 	//makes height in range of [-MAX_HEIGHT, MAX_HEIGHT]
 	height *= MAX_HEIGHT;
 
-	return height;
+	// The -10 here because for some reason the terrain vertices y position is offseted by 10 (Will investigate why later)
+	return height-10;
 }
 
 float Terrain::getRGB(int x, int y, unsigned char* image, int imgHeight)
