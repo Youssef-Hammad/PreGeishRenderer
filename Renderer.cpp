@@ -20,8 +20,12 @@ void Renderer::key_callback(GLFWwindow* window, int key, int scancode, int actio
 Renderer::~Renderer()
 {
 	delete camera;
+	delete objectShaderProgram;
+	delete terrainShaderProgram;
 	for (int i = 0; i < objects.size(); i++)
 		delete objects[i];
+	for (int i = 0; i < terrains.size(); i++)
+		delete terrains[i];
 	glfwTerminate();
 }
 
@@ -32,7 +36,11 @@ void Renderer::processInput(GLFWwindow* window)
 
 	float cameraSpeed = 1.5f * deltaTime;
 	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-		cameraSpeed = deltaTime * 0.6;
+		cameraSpeed = deltaTime * 0.6f;
+
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		cameraSpeed = deltaTime * 20.0f;
+
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera->Process_Keyboard(FORWARD, cameraSpeed);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -110,11 +118,21 @@ Renderer::Renderer(int width, int height, std::string window_name)
 
 	glViewport(0, 0, width, height);
 
-	std::string objectVertPath = "C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\objectVertexShader.vert";
+	std::string objectVertPath = "C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\ObjectVertexShader.vert";
 	std::string objectFragPath = "C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\ObjectFragmentShader.frag";
+
+	std::string terrainVertPath = "C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\TerrainVertexShader.vert";
+	std::string terrainFragPath = "C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\TerrainFragmentShader.frag";
+	terrainShaderProgram = new Shader(terrainVertPath, terrainFragPath);
 
 	objectShaderProgram = new Shader(objectVertPath, objectFragPath);
 	objectShaderProgram->SetActive();
+	objectShaderProgram->setVec3("dirLight.direction", glm::vec3(-0.2f, -1.0f, -1.0f));
+	objectShaderProgram->setVec3("dirLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+	objectShaderProgram->setVec3("dirLight.diffuse", glm::vec3(0.9f, 0.9f, 0.9f));
+	objectShaderProgram->setVec3("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+
+	terrainShaderProgram->SetActive();
 	objectShaderProgram->setVec3("dirLight.direction", glm::vec3(-0.2f, -1.0f, -1.0f));
 	objectShaderProgram->setVec3("dirLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
 	objectShaderProgram->setVec3("dirLight.diffuse", glm::vec3(0.9f, 0.9f, 0.9f));
@@ -150,6 +168,21 @@ void Renderer::render_scene()
 		objects[i]->draw();
 	}
 
+	terrainShaderProgram->SetActive();
+
+	view = camera->GetViewMatrix();
+	terrainShaderProgram->setMat4("view", view);
+
+	projection = glm::perspective(glm::radians(camera->Zoom), (float)Width / (float)Height, 0.1f, 100.0f);
+	terrainShaderProgram->setMat4("projection", projection);
+
+	terrainShaderProgram->setVec3("viewPos", camera->Position);
+
+	for (int i = 0; i < terrains.size(); i++)
+	{
+		terrains[i]->draw();
+	}
+
 	glfwSwapBuffers(window);
 	glfwPollEvents();
 }
@@ -159,4 +192,10 @@ void Renderer::AddObj(std::string path, glm::vec3 pos)
 {
 	RenderableObject* temp = new RenderableObject(path, objectShaderProgram, pos);
 	objects.push_back(temp);
+}
+
+void Renderer::AddTerrain()
+{
+	Terrain* terrain = new Terrain(0,0,"C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\test_resources\\grass.png",terrainShaderProgram,"C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\test_resources\\JnBQ0y9Q.png");
+	terrains.push_back(terrain);
 }

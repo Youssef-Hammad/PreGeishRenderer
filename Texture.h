@@ -26,6 +26,7 @@ public:
 	Material material;
 
 	Texture(GLenum TextureNumber, std::string path, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec, int illum, float shine);
+	Texture(GLenum TextureNumber, std::string path);
 	void bind();
 	void unbind();
 };
