@@ -59,6 +59,12 @@
     <None Include="TerrainFragmentShader.frag">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="SkyBoxVertexShader.vert">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="SkyBoxFragmentShader.frag">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">

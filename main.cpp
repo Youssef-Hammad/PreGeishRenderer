@@ -76,6 +76,8 @@ int main()
 	//renderer.AddObj("E:\\3D-Models\\Wargreymon\\WarGreymon.obj", glm::vec3(14.0f, 0.0f, 0.0f));
 	renderer.AddTerrain();
 
+	renderer.ToggleSkyBox();
+
 	//Texture tex(GL_TEXTURE0, "C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\test_resources\\JnBQ0y9Q.png", glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f), 2, 32);
 
 	while (!glfwWindowShouldClose(renderer.window))
