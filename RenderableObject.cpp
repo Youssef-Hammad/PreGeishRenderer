@@ -152,7 +152,7 @@ void RenderableObject::draw()
 	int vertices_cnt = 0;
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, Position);
-	//model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.3f, 0.5f));
+	model = glm::rotate(model, glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 	shaderProgram->setMat4("model", model);
 	for (int i = 0; i < texture_order.size(); i++)
 	{

@@ -18,7 +18,9 @@ class Renderer
 private:
 	Shader* objectShaderProgram;
 	Shader* terrainShaderProgram;
+	Shader* skyboxShaderProgram;
 	GLenum currentTextureNumber;
+	unsigned int SkyBoxVAO, SkyBoxVBO, SkyBoxEBO, SkyBoxTexture;
 
 	void processInput(GLFWwindow* window);
 
@@ -38,14 +40,18 @@ public:
 	bool firstMouseMove;
 	float lastX;
 	float lastY;
+	bool renderSkyBox;
 
 	Renderer(int width, int height, std::string window_name);
 	void render_scene();
+	void InitSkyBox();
+	void ToggleSkyBox();
 	void AddObj(std::string path, glm::vec3 pos);
 	void AddTerrain();
 	void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 	void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 	void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+	void DrawSkyBox();
 
 	~Renderer();
 };

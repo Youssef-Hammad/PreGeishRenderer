@@ -72,9 +72,12 @@ int main()
 	renderer.AddObj("E:\\3D-Models\\RubiksCube\\rubikscube.obj", glm::vec3(0.0f, 0.0f, 0.0f));
 	renderer.AddObj("E:\\3D-Models\\Antylamon Snow\\Antylamon Snow.obj", glm::vec3(3.0f, 0.0f, 0.0f));
 	renderer.AddObj("E:\\3D-Models\\Digimon Tai\\Item1\\digimon-digital-monsters-tai.obj", glm::vec3(6.0f,0.0f,0.0f));
-	renderer.AddObj("E:\\3D-Models\\Electro Cicin Mage\\Electro Cicin Mage.obj", glm::vec3(10.0f, 0.0f, 0.0f));
+	renderer.AddObj("E:\\3D-Models\\Electro Cicin Mage\\Electro Cicin Mage.obj", glm::vec3(9.0f, 0.0f, 0.0f));
+	renderer.AddObj("E:\\3D-Models\\AmongUs\\Item1\\untitled.obj", glm::vec3(12.0f, 0.0f, 0.0f));
 	//renderer.AddObj("E:\\3D-Models\\Wargreymon\\WarGreymon.obj", glm::vec3(14.0f, 0.0f, 0.0f));
 	renderer.AddTerrain();
+
+	renderer.ToggleSkyBox();
 
 	//Texture tex(GL_TEXTURE0, "C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\test_resources\\JnBQ0y9Q.png", glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f), 2, 32);
 

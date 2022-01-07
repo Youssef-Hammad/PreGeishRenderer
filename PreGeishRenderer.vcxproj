@@ -156,6 +156,8 @@
   <ItemGroup>
     <None Include="ObjectFragmentShader.frag" />
     <None Include="ObjectVertexShader.vert" />
+    <None Include="SkyBoxFragmentShader.frag" />
+    <None Include="SkyBoxVertexShader.vert" />
     <None Include="TerrainFragmentShader.frag" />
     <None Include="TerrainVertexShader.vert" />
   </ItemGroup>
