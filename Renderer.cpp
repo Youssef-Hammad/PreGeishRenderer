@@ -36,13 +36,15 @@ Renderer::~Renderer()
 
 void Renderer::DrawSkyBox()
 {
+	// The default depth setting is GL_LESS, making anything with depth stricly less than 1 render
+	// Since the depth of the skybox is exactly one, we change the setting to less than or equal
 	glDepthFunc(GL_LEQUAL);
 
 	skyboxShaderProgram->SetActive();
-	glm::mat4 view = glm::mat4(1.0f);
-	glm::mat4 projection = glm::mat4(1.0f);
-	view = glm::mat4(glm::mat3(camera->GetViewMatrix()));
-	projection = glm::perspective(glm::radians(45.0f), (float)Width / (float)Height, 0.1f, 100.0f);
+	// The cast to from mat4 to mat3 and then to mat4 again 
+	// This ensures the last row/col of the view matrix are 0, and thus having no effect on translations
+	glm::mat4 view = glm::mat4(glm::mat3(camera->GetViewMatrix()));
+	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)Width / (float)Height, 0.1f, 100.0f);
 	skyboxShaderProgram->setMat4("view", view);
 	skyboxShaderProgram->setMat4("projection", projection);
 
@@ -52,6 +54,7 @@ void Renderer::DrawSkyBox()
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 
+	// Returning the depth setting to GL_LESS again
 	glDepthFunc(GL_LESS);
 }
 
@@ -145,11 +148,11 @@ Renderer::Renderer(int width, int height, std::string window_name)
 
 	glViewport(0, 0, width, height);
 
-	std::string objectVertPath = "C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\ObjectVertexShader.vert";
-	std::string objectFragPath = "C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\ObjectFragmentShader.frag";
+	std::string objectVertPath = "ObjectVertexShader.vert";
+	std::string objectFragPath = "ObjectFragmentShader.frag";
 
-	std::string terrainVertPath = "C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\TerrainVertexShader.vert";
-	std::string terrainFragPath = "C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\TerrainFragmentShader.frag";
+	std::string terrainVertPath = "TerrainVertexShader.vert";
+	std::string terrainFragPath = "TerrainFragmentShader.frag";
 
 	std::string skyboxVertPath = "SkyBoxVertexShader.vert";
 	std::string skyboxFragPath = "SkyBoxFragmentShader.frag";
@@ -273,6 +276,7 @@ void Renderer::InitSkyBox()
 		6,2,3
 	};
 
+	// Generate and prepare skybox vbo/ebo and bind them to the vao
 
 	glGenVertexArrays(1, &SkyBoxVAO);
 	glGenBuffers(1, &SkyBoxVBO);
@@ -292,8 +296,12 @@ void Renderer::InitSkyBox()
 	glBindVertexArray(0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+	// Skybox Textures
+
 	skyboxShaderProgram->SetActive();
 	skyboxShaderProgram->setInt("skyboxTex", 0);
+
+	//Path to all 6 textures making up the cube texture (or cube map)
 
 	std::string cubeMaps[] =
 	{
@@ -319,9 +327,21 @@ void Renderer::InitSkyBox()
 		unsigned char* img = stbi_load(cubeMaps[i].c_str(), &width, &height, &nrChannels, 0);
 		if (img)
 		{
-			// Cube maps are expected to start from top left instead of bottom left
+			// Cube maps textures are expected to start from top left instead of bottom left
 			// That's why we disable flipping
 			stbi_set_flip_vertically_on_load(false);
+
+			// Order of the cube map sides (and their names)
+			// GL_TEXTURE_CUBE_MAP_POSITIVE_X	right
+			// GL_TEXTURE_CUBE_MAP_NEGATIVE_X	left
+			// GL_TEXTURE_CUBE_MAP_POSITIVE_Y	top
+			// GL_TEXTURE_CUBE_MAP_NEGATIVE_Y	bottom
+			// GL_TEXTURE_CUBE_MAP_POSITIVE_Z	front
+			// GL_TEXTURE_CUBE_MAP_NEGATIVE_Z	back
+			// For some reason the front (which is expected to be the negative z)
+			// is the positive z, meaning cube maps are made in left-handed system
+			// No idea why, but that's how it is
+
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, img);
 			stbi_image_free(img);
 		}
@@ -342,6 +362,6 @@ void Renderer::ToggleSkyBox()
 
 void Renderer::AddTerrain()
 {
-	Terrain* terrain = new Terrain(0,0,"C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\test_resources\\grass.png",terrainShaderProgram,"C:\\Users\\youss\\source\\repos\\PreGeishRenderer\\test_resources\\JnBQ0y9Q.png");
+	Terrain* terrain = new Terrain(0,0,"test_resources\\grass.png",terrainShaderProgram,"test_resources\\JnBQ0y9Q.png");
 	terrains.push_back(terrain);
 }
