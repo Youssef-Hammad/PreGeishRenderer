@@ -1,22 +1,5 @@
 #include "Renderer.h"
 
-void Renderer::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-	if (key == GLFW_KEY_P && action == GLFW_PRESS)
-	{
-		if (!wireframe)
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			wireframe = true;
-		}
-		else
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			wireframe = false;
-		}
-	}
-}
-
 Renderer::~Renderer()
 {
 	delete camera;
@@ -80,29 +63,6 @@ void Renderer::processInput(GLFWwindow* window)
 		camera->Process_Keyboard(LEFT, cameraSpeed);
 }
 
-void Renderer::mouse_callback(GLFWwindow* window, double xpos, double ypos)
-{
-	if (firstMouseMove)
-	{
-		firstMouseMove = false;
-		lastX = xpos;
-		lastY = ypos;
-	}
-
-	float xoffset = xpos - lastX;
-	float yoffset = lastY - ypos;
-
-	lastX = xpos;
-	lastY = ypos;
-
-	camera->Process_Mouse_Movement(xoffset, yoffset);
-}
-
-void Renderer::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-	camera->Process_Mouse_Scroll(yoffset);
-}
-
 Renderer::Renderer(int width, int height, std::string window_name)
 {
 	Width = width;
@@ -159,7 +119,12 @@ Renderer::Renderer(int width, int height, std::string window_name)
 
 	skyboxShaderProgram = new Shader(skyboxVertPath, skyboxFragPath);
 
-	InitSkyBox();
+	{
+		Timer timer;
+		InitSkyBox();
+		std::cout << "Skybox loading time:\n";
+	}
+	std::cout << "\n\n";
 
 	terrainShaderProgram = new Shader(terrainVertPath, terrainFragPath);
 
@@ -225,7 +190,7 @@ void Renderer::render_scene()
 	terrainShaderProgram->SetActive();
 	terrainShaderProgram->setMat4("view", view);
 
-	projection = glm::perspective(glm::radians(camera->Zoom), (float)Width / (float)Height, 0.1f, 10000.0f);
+	projection = glm::perspective(glm::radians(camera->Zoom), (float)Width / (float)Height, 0.1f, 100.0f);
 	terrainShaderProgram->setMat4("projection", projection);
 
 	terrainShaderProgram->setVec3("viewPos", camera->Position);

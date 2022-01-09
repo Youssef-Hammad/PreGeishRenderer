@@ -7,6 +7,7 @@
 #include "Terrain.h"
 #include "Shader.h"
 #include "Camera.h"
+#include "Timer.h"
 #include <iostream>
 #include <vector>
 #include <glad/glad.h>
