@@ -1,22 +1,5 @@
 #include "Renderer.h"
 
-void Renderer::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-	if (key == GLFW_KEY_P && action == GLFW_PRESS)
-	{
-		if (!wireframe)
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			wireframe = true;
-		}
-		else
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			wireframe = false;
-		}
-	}
-}
-
 Renderer::~Renderer()
 {
 	delete camera;
@@ -80,29 +63,6 @@ void Renderer::processInput(GLFWwindow* window)
 		camera->Process_Keyboard(LEFT, cameraSpeed);
 }
 
-void Renderer::mouse_callback(GLFWwindow* window, double xpos, double ypos)
-{
-	if (firstMouseMove)
-	{
-		firstMouseMove = false;
-		lastX = xpos;
-		lastY = ypos;
-	}
-
-	float xoffset = xpos - lastX;
-	float yoffset = lastY - ypos;
-
-	lastX = xpos;
-	lastY = ypos;
-
-	camera->Process_Mouse_Movement(xoffset, yoffset);
-}
-
-void Renderer::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-	camera->Process_Mouse_Scroll(yoffset);
-}
-
 Renderer::Renderer(int width, int height, std::string window_name)
 {
 	Width = width;
@@ -159,7 +119,12 @@ Renderer::Renderer(int width, int height, std::string window_name)
 
 	skyboxShaderProgram = new Shader(skyboxVertPath, skyboxFragPath);
 
-	InitSkyBox();
+	{
+		Timer timer;
+		InitSkyBox();
+		std::cout << "Skybox loading time:\n";
+	}
+	std::cout << "\n\n";
 
 	terrainShaderProgram = new Shader(terrainVertPath, terrainFragPath);
 
@@ -176,16 +141,32 @@ Renderer::Renderer(int width, int height, std::string window_name)
 	objectShaderProgram->setVec3("dirLight.diffuse", glm::vec3(0.9f, 0.9f, 0.9f));
 	objectShaderProgram->setVec3("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
+	// Enabling depth testing for 3D movement
 	glEnable(GL_DEPTH_TEST);
+
+	// Enabling face culling to avoid rendering triangles if they're viewed from 
+	glEnable(GL_CULL_FACE);
+	// The face we want to cull (which will be the front most of the time. I don't know why, figured this out by trial and error)
+	glCullFace(GL_FRONT);
+	// Uses clockwise standard for face culling. Meaning that if the vertices are viewed from angle that makes them arranged in a counter-clockwise manner, they get culled
+	glFrontFace(GL_CW);
 
 }
 
 void Renderer::render_scene()
 {
 	float currentFrame = glfwGetTime();
+	// Time taken to render a single frame calculated in seconds
 	deltaTime = currentFrame - lastFrame;
 	lastFrame = currentFrame;
 
+	// Calculating the number of frames per second (law el geish nasak leh bte3mel 1.0/deltaTime, basically cross multiplication)
+	// Example: it takes 0.008s to render 1 frame, so it will render (1/0.008) frames per second
+	std::string FPS = std::to_string(1.0 / deltaTime);
+	// Converting deltaTime to milliseconds
+	std::string ms = std::to_string(deltaTime * 1000);
+	std::string newTitle = "Pre Geish Renderer - " + FPS + "FPS    /    " + ms + "ms";
+	glfwSetWindowTitle(window, newTitle.c_str());
 	processInput(window);
 	glClearColor(0.3f, 0.2f, 0.2f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -207,8 +188,6 @@ void Renderer::render_scene()
 	}
 
 	terrainShaderProgram->SetActive();
-
-	view = camera->GetViewMatrix();
 	terrainShaderProgram->setMat4("view", view);
 
 	projection = glm::perspective(glm::radians(camera->Zoom), (float)Width / (float)Height, 0.1f, 100.0f);
@@ -221,8 +200,13 @@ void Renderer::render_scene()
 		terrains[i]->draw();
 	}
 
-	if(renderSkyBox)
+	if (renderSkyBox)
+	{
+		// Disabling face culling for the skybox, because it's not necessary
+		glDisable(GL_CULL_FACE);
 		DrawSkyBox();
+		glEnable(GL_CULL_FACE);
+	}
 
 	glfwSwapBuffers(window);
 	glfwPollEvents();
