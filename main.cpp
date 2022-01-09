@@ -73,31 +73,31 @@ int main()
 
 	{
 		Timer timer;
-		renderer.AddObj("E:\\3D-Models\\RubiksCube\\rubikscube.obj", glm::vec3(0.0f, 0.0f, 0.0f));
+		renderer.AddObj("test_resources\\3D-Models\\RubiksCube\\rubikscube.obj", glm::vec3(0.0f, 0.0f, 0.0f));
 		std::cout << "Rubiks cube loading time:\n";
 	}
 	std::cout << "\n\n";
 	{
 		Timer timer;
-		renderer.AddObj("E:\\3D-Models\\Antylamon Snow\\Antylamon Snow.obj", glm::vec3(3.0f, 0.0f, 0.0f));
+		renderer.AddObj("test_resources\\3D-Models\\Antylamon Snow\\Antylamon Snow.obj", glm::vec3(3.0f, 0.0f, 0.0f));
 		std::cout << "Antylamon Snow loading time:\n";
 	}
 	std::cout << "\n\n";
 	{
 		Timer timer;
-		renderer.AddObj("E:\\3D-Models\\Digimon Tai\\Item1\\digimon-digital-monsters-tai.obj", glm::vec3(6.0f, 0.0f, 0.0f));
+		renderer.AddObj("test_resources\\3D-Models\\Taichi\\digimon-digital-monsters-tai.obj", glm::vec3(6.0f, 0.0f, 0.0f));
 		std::cout << "Taichi loading time:\n";
 	}
 	std::cout << "\n\n";
 	{
 		Timer timer;
-		renderer.AddObj("E:\\3D-Models\\Electro Cicin Mage\\Electro Cicin Mage.obj", glm::vec3(9.0f, 0.0f, 0.0f));
+		renderer.AddObj("test_resources\\3D-Models\\Electro Mage\\Electro Cicin Mage.obj", glm::vec3(9.0f, 0.0f, 0.0f));
 		std::cout << "Cicin Mage loading time:\n";
 	}
 	std::cout << "\n\n";
 	{
 		Timer timer;
-		renderer.AddObj("E:\\3D-Models\\AmongUs\\Item1\\untitled.obj", glm::vec3(12.0f, 0.0f, 0.0f));
+		renderer.AddObj("test_resources\\3D-Models\\AmongUs\\untitled.obj", glm::vec3(12.0f, 0.0f, 0.0f));
 		std::cout << "Among us loading time:\n";
 	}
 	std::cout << "\n\n";

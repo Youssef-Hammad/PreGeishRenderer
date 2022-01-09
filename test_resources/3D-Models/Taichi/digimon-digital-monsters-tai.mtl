@@ -1,0 +1,22 @@
+# Blender MTL File: 'None'
+# Material Count: 2
+
+newmtl None
+Ns 96.078431
+Ka 0.300000 0.300000 0.300000
+Kd 0.800000 0.800000 0.800000
+Ks 0.080000 0.080000 0.080000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Head.png
+
+newmtl None_Tai_png
+Ns 96.078431
+Ka 0.300000 0.300000 0.300000
+Kd 0.800000 0.800000 0.800000
+Ks 0.080000 0.080000 0.080000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Tai.png
