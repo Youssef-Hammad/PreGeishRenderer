@@ -56,6 +56,11 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 	renderer.camera->Process_Mouse_Scroll(yoffset);
 }
 
+void frame_buffer_size_callback(GLFWwindow* window, int width, int height)
+{
+	glViewport(0, 0, width, height);
+}
+
 int main()
 {
 
@@ -68,6 +73,7 @@ int main()
 	glfwSetKeyCallback(renderer.window, key_callback);
 	glfwSetCursorPosCallback(renderer.window, mouse_callback);
 	glfwSetScrollCallback(renderer.window, scroll_callback);
+	glfwSetFramebufferSizeCallback(renderer.window, frame_buffer_size_callback);
 
 	glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f);
 

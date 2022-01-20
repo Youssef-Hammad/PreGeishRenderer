@@ -18,7 +18,7 @@ public:
 
 	Shader(std::string vertexPath, std::string fragmentPath);
 
-	void SetActive();
+	void SetActive(); // Binds shader program to OpenGL
 
 	void setBool(const std::string& name, bool value) const;
 	void setInt(const std::string& name, int value) const;

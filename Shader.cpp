@@ -8,9 +8,11 @@ Shader::Shader(std::string vertexPath, std::string fragmentPath)
 	std::ifstream vShaderFile;
 	std::ifstream fShaderFile;
 
+	// Enabling exceptions
 	vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 	fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 
+	// Loading the shader codes
 	try
 	{
 		vShaderFile.open(vertexPath);
@@ -30,6 +32,8 @@ Shader::Shader(std::string vertexPath, std::string fragmentPath)
 	{
 		std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ" << std::endl;
 	}
+
+	// Compiling and linking the shaders, displays errors (if any)
 
 	const char* vShaderCode = vertexCode.c_str();
 	const char* fShaderCode = fragmentCode.c_str();
@@ -64,6 +68,8 @@ Shader::Shader(std::string vertexPath, std::string fragmentPath)
 		glGetProgramInfoLog(ID, 512, NULL, infoLog);
 		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
 	}
+
+	// Deleting vertex and fragment shaders since they are both copied to the shader program
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);
 
