@@ -148,9 +148,8 @@ RenderableObject::RenderableObject(std::string path, Shader* _shaderProgram, glm
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 
-	int stride_size = (mesh->position_count ? 3 : 1) + (mesh->texcoord_count ? 2 : 1) + (mesh->normal_count ? 3 : 1);
-
-	std::cout << "Stride size: " << stride_size << std::endl;
+	// 8 = 3 vertex positions + 3 vertex normals + 2 texture coordinates
+	int stride_size = 8;
 
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -210,6 +209,8 @@ void RenderableObject::draw()
 			shaderProgram->setInt("material.specularTex", texture_order[i].second);
 		}
 		glDrawArrays(GL_TRIANGLES, vertices_cnt, texture_order[i].first);
+		// Increasing vertices_cnt to be correctly positioned as an offset to where to start
+		// When drawing vvertices
 		vertices_cnt += texture_order[i].first;
 		textures[texture_order[i].second].unbind();
 	}

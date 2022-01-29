@@ -20,7 +20,7 @@ public:
 	int vertices_size; //number of vertices (not floating values)
 	unsigned int VAO;
 	unsigned int VBO;
-	Shader* shaderProgram;
+	Shader* shaderProgram; // Shader program used to draw the vertices
 	glm::vec3 Position; // Object's position in the world
 	std::vector<Texture> textures;
 	std::vector<std::pair<int, int> > texture_order; // each pair contains the number of consecutive vertices (first int) and the texture index they use (second int)

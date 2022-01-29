@@ -1,5 +1,6 @@
 #version 330 core
 
+
 struct Material
 {
 	bool renderDiffTexture;
@@ -23,24 +24,27 @@ struct DirectionalLight
 	vec3 specular;
 };
 
-uniform Material material;
-
+// inputs from vertex shader
 in vec3 Normal;
 in vec3 FragPos;
 in vec2 TexCoords;
 
+
 out vec4 FragColor;
 
+
+// uniforms
 uniform DirectionalLight dirLight;
 uniform vec3 viewPos;
+uniform Material material;
 
+// Functions
 vec3 calculateDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir);
-
-// TODOOOOOOOOOOOOOOO: return calculations to view space so I don't have to send viewPos in uniform
 
 void main()
 {
-	vec3 norm = normalize(Normal);
+	// Remember to normalize everything
+	vec3 norm = normalize(Normal); 
 	//Vector pointing towards the fragment
 	vec3 viewDir = normalize(viewPos-FragPos);
 	vec3 result = calculateDirectionalLight(dirLight, norm, viewDir);
@@ -49,19 +53,25 @@ void main()
 	//FragColor = texture(material.diffuseTex,TexCoords);
 }
 
+// In case I don't remember why this is done
+// Read the Lighting section starting from here: https://learnopengl.com/Lighting/Basic-Lighting
 vec3 calculateDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir)
 {
+	// Phong lighting initializations
 	vec3 ambient = vec3(0.0);
 	vec3 diffuse = vec3(0.0);
 	vec3 specular = vec3(0.0);
 
+
 	ambient = (light.ambient*material.ambient)*vec3(texture(material.diffuseTex,TexCoords)).rgb;
 
-	// Pointing towards light source
+	// Pointing towards light source (hence, the negative sign)
 	vec3 lightDir = normalize(-light.direction);
-	//Calculate angle between normal and light direction through dot product
+	// Calculate angle between normal and light direction through dot product
 	float diffAngle = max(dot(normal,lightDir),0.0);
 
+	// Determine diffuse effect by multiplying light's diffuse with the angle (Scalar) between the normal and light direction
+	// Then multiplying the result with the material's diffuse and finally with the texture color
 	diffuse = ((light.diffuse*diffAngle)*material.diffuse)*vec3(texture(material.diffuseTex,TexCoords)).rgb;
 
 	// reflection of the light with respect to the fragment's normal
