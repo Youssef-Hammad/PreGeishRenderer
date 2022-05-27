@@ -28,24 +28,24 @@ class Camera
 private:
 	void Update_Camera_Vectors();
 public:
-	//Camera Attributes
+	// Camera Attributes
 	glm::vec3 Position;
 	glm::vec3 Front;
 	glm::vec3 Up;
 	glm::vec3 Right;
 	glm::vec3 WorldUp;
 
-	// euler angles
-	float Yaw;
-	float Pitch;
+	// Euler angles
+	float Yaw; // Y axis (Right/Left)
+	float Pitch; // X axis (Up/Down)
 
 	//Camera options
 	float MovementSpeed;
 	float MouseSensitivity;
 	float Zoom;
 
+
 	Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
-	Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch);
 	glm::mat4 GetViewMatrix();
 	void Process_Keyboard(Camera_Movement direction, float deltaTime);
 	void Process_Mouse_Movement(float xoffset, float yoffset, GLboolean constraintPitch = true);

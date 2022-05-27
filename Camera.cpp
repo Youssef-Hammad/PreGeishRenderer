@@ -1,29 +1,16 @@
 #include "Camera.h"
 
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch) 
-	: Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
+	: Position(position), WorldUp(up), Yaw(yaw), Pitch(pitch),
+	Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
 {
-	Position = position;
-	WorldUp = up;
-	Yaw = yaw;
-	Pitch = pitch;
-	Update_Camera_Vectors();
-}
-
-Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch)
-	: Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
-{
-	Position = glm::vec3(posX, posY, posZ);
-	WorldUp = glm::vec3(upX, upY, upZ);
-	Yaw = yaw;
-	Pitch = pitch;
 	Update_Camera_Vectors();
 }
 
 glm::mat4 Camera::GetViewMatrix()
 {
 	// Camera Position, Target Position, Up Vector relative to the world
-	return glm::lookAt(Position, Position + Front, Up);
+	return glm::lookAt(Position, Position + Front, WorldUp);
 }
 
 void Camera::Process_Keyboard(Camera_Movement direction, float deltaTime)
@@ -43,6 +30,7 @@ void Camera::Process_Keyboard(Camera_Movement direction, float deltaTime)
 
 void Camera::Process_Mouse_Movement(float xoffset, float yoffset, GLboolean constraintPitch)
 {
+
 	xoffset *= MouseSensitivity;
 	yoffset *= MouseSensitivity;
 
@@ -71,12 +59,17 @@ void Camera::Process_Mouse_Scroll(float yoffset)
 
 void Camera::Update_Camera_Vectors()
 {
+	// Converting the Yaw and Pitch values to a 3D direction vector
+	// See https://learnopengl.com/Getting-started/Camera "Look Around" Section
+	// It's explained there better than any comment I'll write
 	glm::vec3 newFront;
 	newFront.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
 	newFront.y = sin(glm::radians(Pitch));
 	newFront.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
 	Front = glm::normalize(newFront);
 
+	// Cross product between 2 vectors yields a third vector perpendicular to both
+	// That's how the right and up vector are calculated
 	Right = glm::normalize(glm::cross(Front, WorldUp));
 	Up = glm::normalize(glm::cross(Right, Front));
 }

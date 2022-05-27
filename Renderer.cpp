@@ -176,7 +176,7 @@ void Renderer::render_scene()
 	glm::mat4 view = camera->GetViewMatrix();
 	objectShaderProgram->setMat4("view", view);
 
-	glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)Width / (float)Height, 0.1f, 100.0f);
+	glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)Width / (float)Height, 0.1f, 1000.0f);
 	objectShaderProgram->setMat4("projection", projection);
 
 	objectShaderProgram->setVec3("viewPos", camera->Position);
@@ -190,7 +190,7 @@ void Renderer::render_scene()
 	terrainShaderProgram->SetActive();
 	terrainShaderProgram->setMat4("view", view);
 
-	projection = glm::perspective(glm::radians(camera->Zoom), (float)Width / (float)Height, 0.1f, 100.0f);
+	projection = glm::perspective(glm::radians(camera->Zoom), (float)Width / (float)Height, 0.1f, 1000.0f);
 	terrainShaderProgram->setMat4("projection", projection);
 
 	terrainShaderProgram->setVec3("viewPos", camera->Position);
