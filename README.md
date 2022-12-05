@@ -7,8 +7,8 @@
 - [External Libraries and Resources](#External-Libraries-and-Resources)
 
 ## Demo
-[Youtube Video](https://www.youtube.com/watch?v=QUgoaPlRY2o)<br/>
-[![Demo Video](https://img.youtube.com/vi/QUgoaPlRY2o/0.jpg)](https://www.youtube.com/watch?v=QUgoaPlRY2o)
+[Youtube Video](https://www.youtube.com/watch?v=E_M3MYtZRSY)<br/>
+[![Demo Video](https://i9.ytimg.com/vi/E_M3MYtZRSY/mqdefault.jpg?sqp=CJzyuZwG-oaymwEmCMACELQB8quKqQMa8AEB-AH-CYAC0AWKAgwIABABGGEgYShhMA8=&rs=AOn4CLAiUSMP-K1qiUW2DYDMr2dsZDgQug)](https://www.youtube.com/watch?v=E_M3MYtZRSY)
 
 ## Features and Trello board
 - [x] 3D Models rendering/Loading
