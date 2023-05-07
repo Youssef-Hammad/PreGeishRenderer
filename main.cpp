@@ -1,81 +1,10 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include "Shader.h"
-#include "RenderableObject.h"
-#include "Camera.h"
-#include "Renderer.h"
 #include "Timer.h"
-
-const unsigned int WINDOW_WIDTH = 800;
-const unsigned int WINDOW_HEIGHT = 600;
-
-Renderer renderer(WINDOW_WIDTH, WINDOW_HEIGHT, "Pre Geish Renderer");
-
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-	if (key == GLFW_KEY_P && action == GLFW_PRESS)
-	{
-		if (!renderer.wireframe)
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			renderer.wireframe = true;
-		}
-		else
-		{
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			renderer.wireframe = false;
-		}
-	}
-}
-
-
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
-{
-	if (renderer.firstMouseMove)
-	{
-		renderer.lastX = xpos;
-		renderer.lastY = ypos;
-		renderer.firstMouseMove = false;
-	}
-
-	float xoffset = xpos - renderer.lastX;
-	float yoffset = renderer.lastY - ypos;
-
-	renderer.lastX = xpos;
-	renderer.lastY = ypos;
-
-	renderer.camera->Process_Mouse_Movement(xoffset, yoffset);
-}
-
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-	renderer.camera->Process_Mouse_Scroll(yoffset);
-}
-
-void frame_buffer_size_callback(GLFWwindow* window, int width, int height)
-{
-	glViewport(0, 0, width, height);
-}
+#include "Initializer.h"
 
 int main()
 {
+	Initialize();
 
-	if (!renderer.initSuccess)
-	{
-		std::cout << "Failed to initialize renderer" << std::endl;
-		return -1;
-	}
-
-	glfwSetKeyCallback(renderer.window, key_callback);
-	glfwSetCursorPosCallback(renderer.window, mouse_callback);
-	glfwSetScrollCallback(renderer.window, scroll_callback);
-	glfwSetFramebufferSizeCallback(renderer.window, frame_buffer_size_callback);
-
-	glm::vec3 pos = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	{
 		Timer timer;
@@ -121,7 +50,7 @@ int main()
 		renderer.render_scene();
 	}
 
-	glfwTerminate();
+	Terminate();
 
 
 	return 0;
