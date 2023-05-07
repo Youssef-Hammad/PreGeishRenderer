@@ -3,7 +3,7 @@
 
 int main()
 {
-	Initialize();
+	/*Initialize();
 
 
 	{
@@ -42,9 +42,15 @@ int main()
 		std::cout << "Terrain loading time:\n";
 	}
 
+	renderer.ToggleSkyBox();*/
+
+	Initialize();
+
+	renderer.AddObj("test_resources\\3D-Models\\RubiksCube\\rubikscube.obj", glm::vec3(0.f, 0.f, 0.f));
+	renderer.AddTerrain();
 	renderer.ToggleSkyBox();
 
-	while (!glfwWindowShouldClose(renderer.window))
+	while (WindowIsOpen())
 	{
 
 		renderer.render_scene();

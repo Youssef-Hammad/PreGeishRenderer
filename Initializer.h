@@ -72,6 +72,11 @@ void Initialize()
 	glfwSetFramebufferSizeCallback(renderer.window, frame_buffer_size_callback);
 }
 
+bool WindowIsOpen()
+{
+	return !glfwWindowShouldClose(renderer.window);
+}
+
 void Terminate()
 {
 	glfwTerminate();
