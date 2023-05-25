@@ -22,6 +22,8 @@ const float PITCH = 0.0f;
 const float SPEED = 2.5f;
 const float SENSITIVITY = 0.1f;
 const float ZOOM = 45.0f;
+const glm::vec3 INIT_POSITION(0.0f, 2.0f, 0.0f);
+const glm::vec3 INIT_UP(0.0f, 1.0f, 0.0f);
 
 class Camera
 {
@@ -45,7 +47,7 @@ public:
 	float Zoom;
 
 
-	Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
+	Camera(glm::vec3 position = glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
 	glm::mat4 GetViewMatrix();
 	void Process_Keyboard(Camera_Movement direction, float deltaTime);
 	void Process_Mouse_Movement(float xoffset, float yoffset, GLboolean constraintPitch = true);

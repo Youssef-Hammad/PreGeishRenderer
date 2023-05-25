@@ -76,7 +76,7 @@ Renderer::Renderer(int width, int height, std::string window_name)
 	currentTextureNumber = GL_TEXTURE0;
 	renderSkyBox = false;
 
-	camera = new Camera(glm::vec3(0.0f, 2.0f, 6.0f));
+	camera = new Camera();
 
 	stbi_set_flip_vertically_on_load(true);
 	glfwInit();
@@ -108,14 +108,14 @@ Renderer::Renderer(int width, int height, std::string window_name)
 
 	glViewport(0, 0, width, height);
 
-	std::string objectVertPath = "ObjectVertexShader.vert";
-	std::string objectFragPath = "ObjectFragmentShader.frag";
+	std::string objectVertPath = "shaders/vertex\ shaders/ObjectVertexShader.vert";
+	std::string objectFragPath = "shaders/fragment\ shaders/ObjectFragmentShader.frag";
 
-	std::string terrainVertPath = "TerrainVertexShader.vert";
-	std::string terrainFragPath = "TerrainFragmentShader.frag";
+	std::string terrainVertPath = "shaders/vertex\ shaders/TerrainVertexShader.vert";
+	std::string terrainFragPath = "shaders/fragment\ shaders/TerrainFragmentShader.frag";
 
-	std::string skyboxVertPath = "SkyBoxVertexShader.vert";
-	std::string skyboxFragPath = "SkyBoxFragmentShader.frag";
+	std::string skyboxVertPath = "shaders/vertex\ shaders/SkyBoxVertexShader.vert";
+	std::string skyboxFragPath = "shaders/fragment\ shaders/SkyBoxFragmentShader.frag";
 
 	skyboxShaderProgram = new Shader(skyboxVertPath, skyboxFragPath);
 
@@ -131,7 +131,7 @@ Renderer::Renderer(int width, int height, std::string window_name)
 	objectShaderProgram = new Shader(objectVertPath, objectFragPath);
 	objectShaderProgram->SetActive();
 	objectShaderProgram->setVec3("dirLight.direction", glm::vec3(-0.2f, -1.0f, 1.0f));
-	objectShaderProgram->setVec3("dirLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+	objectShaderProgram->setVec3("dirLight.ambient", glm::vec3(1.0f, 1.0f, 1.0f));
 	objectShaderProgram->setVec3("dirLight.diffuse", glm::vec3(0.9f, 0.9f, 0.9f));
 	objectShaderProgram->setVec3("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 

@@ -1,9 +1,11 @@
 #include "Camera.h"
+#include <iostream>
 
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch) 
 	: Position(position), WorldUp(up), Yaw(yaw), Pitch(pitch),
 	Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
 {
+	//std::cout << INIT_POSITION.x << " " << INIT_POSITION.y << " " << INIT_POSITION.z << "\n" << position.x << " " << position.y << " " << position.z << std::endl;
 	Update_Camera_Vectors();
 }
 
