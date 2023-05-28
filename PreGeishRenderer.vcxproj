@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Skybox.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\fast_obj.cpp" />
     <ClCompile Include="src\glad.c" />
@@ -168,9 +169,11 @@
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\fast_obj.h" />
     <ClInclude Include="include\Initializer.h" />
+    <ClInclude Include="include\PGRstatics.h" />
     <ClInclude Include="include\RenderableObject.h" />
     <ClInclude Include="include\Renderer.h" />
     <ClInclude Include="include\Shader.h" />
+    <ClInclude Include="include\Skybox.h" />
     <ClInclude Include="include\stb_image.h" />
     <ClInclude Include="include\Terrain.h" />
     <ClInclude Include="include\Texture.h" />

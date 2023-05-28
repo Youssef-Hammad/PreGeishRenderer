@@ -5,6 +5,9 @@
 
 
 #include "Renderer.h"
+#include "Camera.h"
+#include <iostream>
+#include "PGRstatics.h"
 
 const unsigned int WINDOW_WIDTH = 800;
 const unsigned int WINDOW_HEIGHT = 600;

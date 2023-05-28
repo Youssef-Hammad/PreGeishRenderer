@@ -7,7 +7,7 @@
 #include <glm/glm/gtc/matrix_transform.hpp>
 #include <glad/glad.h>
 
-// Defines several possible options for camera movement.
+// Defines several possible options for CAMERA movement.
 enum Camera_Movement
 {
 	FORWARD,
@@ -16,7 +16,7 @@ enum Camera_Movement
 	RIGHT
 };
 
-// Default camera values
+// Default CAMERA values
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
 const float SPEED = 2.5f;
@@ -47,7 +47,7 @@ public:
 	float Zoom;
 
 
-	Camera(glm::vec3 position = glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
+	Camera(glm::vec3 position = glm::vec3(60.0f, 2.0f, 60.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
 	glm::mat4 GetViewMatrix();
 	void Process_Keyboard(Camera_Movement direction, float deltaTime);
 	void Process_Mouse_Movement(float xoffset, float yoffset, GLboolean constraintPitch = true);

@@ -29,6 +29,7 @@ public:
 	GLFWwindow* window;
 	std::vector<RenderableObject*> objects;
 	std::vector<Terrain*> terrains;
+	class Skybox* skybox;
 	bool initSuccess;
 	Camera* camera;
 	int Width;
