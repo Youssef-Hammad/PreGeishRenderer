@@ -1,4 +1,8 @@
 #include "RenderableObject.h"
+#include "Shader.h"
+#include "Texture.h"
+#include <glad/glad.h>
+#include "fast_obj.h"
 
 void RenderableObject::load_vertices()
 {
@@ -137,8 +141,10 @@ void RenderableObject::load_textures()
 }
 
 RenderableObject::RenderableObject(std::string path, Shader* _shaderProgram, glm::vec3 position)
-	: mesh(fast_obj_read(path.c_str())), vertices_size(0) ,shaderProgram(_shaderProgram), Position(position)
+	:  vertices_size(0) ,shaderProgram(_shaderProgram), Position(position)
 {
+	
+	mesh = fast_obj_read(path.c_str());
 	load_vertices();
 
 	load_textures();

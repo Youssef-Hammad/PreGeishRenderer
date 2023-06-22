@@ -3,6 +3,7 @@
 #include "Shader.h"
 #include "Camera.h"
 #include <stb_image.h>
+#include <glad/glad.h>
 
 Skybox::Skybox(Camera* cam, int width, int height)
 {

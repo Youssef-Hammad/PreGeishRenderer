@@ -169,7 +169,6 @@
     <ClInclude Include="include\Camera.h" />
     <ClInclude Include="include\fast_obj.h" />
     <ClInclude Include="include\Initializer.h" />
-    <ClInclude Include="include\PGRstatics.h" />
     <ClInclude Include="include\RenderableObject.h" />
     <ClInclude Include="include\Renderer.h" />
     <ClInclude Include="include\Shader.h" />

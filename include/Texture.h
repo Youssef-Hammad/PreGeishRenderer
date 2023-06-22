@@ -3,10 +3,11 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include <glm/glm/glm.hpp>
-#include <glad/glad.h>
 #include <iostream>
-#include "stb_image.h"
+#include <glm/glm/glm.hpp>
+
+typedef unsigned int GLenum;
+
 
 struct Material
 {

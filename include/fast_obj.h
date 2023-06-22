@@ -112,7 +112,7 @@ typedef struct
 } fastObjGroup;
 
 
-typedef struct
+struct fastObjMesh
 {
     /* Vertex data */
     unsigned int                position_count;
@@ -144,7 +144,7 @@ typedef struct
     unsigned int                group_count;
     fastObjGroup* groups;
 
-} fastObjMesh;
+} ;
 
 typedef struct
 {

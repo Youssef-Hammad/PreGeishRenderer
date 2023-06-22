@@ -3,19 +3,22 @@
 #ifndef SKYBOX_H
 #define SKYBOX_H
 
+class Shader;
+class Camera;
+
 class Skybox
 {
 private:
-	class Shader* shaderProgram;
+	Shader* shaderProgram;
 	unsigned int VAO, VBO, EBO, Texture;
-	class Camera* camera;
+	Camera* camera;
 	int Width;
 	int Height;
 
 
 
 public:
-	Skybox(class Camera* cam, int width, int height);
+	Skybox(Camera* cam, int width, int height);
 	~Skybox();
 
 	void draw();

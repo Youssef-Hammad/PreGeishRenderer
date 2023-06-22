@@ -2,12 +2,14 @@
 #ifndef RENDERABLE_OBJECT_H
 #define RENDERABLE_OBJECT_H
 
-#include "fast_obj.h"
-#include "Shader.h"
-#include "Texture.h"
 #include <glm/glm/gtc/matrix_transform.hpp>
-#include <iostream>
+#include <string>
 #include <vector>
+
+class Texture;
+class Shader;
+struct fastObjMesh;
+
 
 class RenderableObject
 {
@@ -25,8 +27,9 @@ public:
 	std::vector<Texture> textures;
 	std::vector<std::pair<int, int> > texture_order; // each pair contains the number of consecutive vertices (first int) and the texture index they use (second int)
 
+	
+	
 	RenderableObject(std::string path, Shader* _shaderProgram, glm::vec3 position);
-
 	void draw();
 
 	~RenderableObject();
