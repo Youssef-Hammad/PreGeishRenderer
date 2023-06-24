@@ -4,12 +4,7 @@
 #define SHADER_H
 
 #include <iostream>
-#include <fstream>
-#include <sstream>
-
-#include <glad/glad.h>
 #include <glm/glm/glm.hpp>
-#include <glm/glm/gtc/type_ptr.hpp>
 
 class Shader
 {

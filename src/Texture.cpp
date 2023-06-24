@@ -1,4 +1,6 @@
 #include "Texture.h"
+#include "stb_image.h"
+#include <glad/glad.h>
 
 Texture::Texture(GLenum TextureNumber, std::string path, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec, int illum, float shine)
 {

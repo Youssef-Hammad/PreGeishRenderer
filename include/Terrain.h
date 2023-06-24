@@ -3,10 +3,11 @@
 #ifndef TERRAIN_H
 #define TERRAIN_H
 
-#include "Texture.h"
 #include <glm/glm/gtc/matrix_transform.hpp>
-#include "Shader.h"
 #include <iostream>
+
+class Texture;
+class Shader;
 
 class Terrain
 {

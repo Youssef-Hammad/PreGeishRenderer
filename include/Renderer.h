@@ -3,16 +3,21 @@
 #ifndef RENDERER_H
 #define RENDERER_H
 
-#include "RenderableObject.h"
-#include "Terrain.h"
-#include "Shader.h"
-#include "Camera.h"
-#include "Timer.h"
+
+
 #include <iostream>
 #include <vector>
-#include <glad/glad.h>
+#include <glm/glm/glm.hpp>
 
-#include <GLFW/glfw3.h>
+class Shader;
+class Camera;
+class Skybox;
+class Terrain;
+class RenderableObject;
+
+struct GLFWwindow;
+
+typedef unsigned int GLenum;
 
 class Renderer
 {
@@ -29,6 +34,7 @@ public:
 	GLFWwindow* window;
 	std::vector<RenderableObject*> objects;
 	std::vector<Terrain*> terrains;
+	Skybox* skybox;
 	bool initSuccess;
 	Camera* camera;
 	int Width;

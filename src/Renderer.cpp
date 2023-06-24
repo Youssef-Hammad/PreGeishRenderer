@@ -1,4 +1,13 @@
 #include "Renderer.h"
+#include "Skybox.h"
+#include "RenderableObject.h"
+#include "Terrain.h"
+#include "Shader.h"
+#include "Camera.h"
+#include <stb_image.h>
+#include <glad/glad.h>
+#include "Timer.h"
+#include <GLFW/glfw3.h>
 
 Renderer::~Renderer()
 {
@@ -22,6 +31,7 @@ void Renderer::DrawSkyBox()
 	// The default depth setting is GL_LESS, making anything with depth stricly less than 1 render
 	// Since the depth of the skybox is exactly one, we change the setting to less than or equal
 	glDepthFunc(GL_LEQUAL);
+	glDisable(GL_CULL_FACE);
 
 	skyboxShaderProgram->SetActive();
 	// The cast to from mat4 to mat3 and then to mat4 again 
@@ -39,6 +49,7 @@ void Renderer::DrawSkyBox()
 
 	// Returning the depth setting to GL_LESS again
 	glDepthFunc(GL_LESS);
+	glEnable(GL_CULL_FACE);
 }
 
 void Renderer::processInput(GLFWwindow* window)
@@ -76,7 +87,7 @@ Renderer::Renderer(int width, int height, std::string window_name)
 	currentTextureNumber = GL_TEXTURE0;
 	renderSkyBox = false;
 
-	camera = new Camera(glm::vec3(0.0f, 2.0f, 6.0f));
+	camera = new Camera();
 
 	stbi_set_flip_vertically_on_load(true);
 	glfwInit();
@@ -84,7 +95,7 @@ Renderer::Renderer(int width, int height, std::string window_name)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	window = glfwCreateWindow(width, height, "Pre Geish Renderer", NULL, NULL);
+	window = glfwCreateWindow(Width, Height, window_name.c_str(), NULL, NULL);
 
 	if (window == NULL)
 	{
@@ -106,32 +117,34 @@ Renderer::Renderer(int width, int height, std::string window_name)
 	}
 	initSuccess = true;
 
-	glViewport(0, 0, width, height);
+	glViewport(0, 0, Width, Height);
 
-	std::string objectVertPath = "ObjectVertexShader.vert";
-	std::string objectFragPath = "ObjectFragmentShader.frag";
+	std::string objectVertPath = "shaders/vertex\ shaders/ObjectVertexShader.vert";
+	std::string objectFragPath = "shaders/fragment\ shaders/ObjectFragmentShader.frag";
 
-	std::string terrainVertPath = "TerrainVertexShader.vert";
-	std::string terrainFragPath = "TerrainFragmentShader.frag";
+	std::string terrainVertPath = "shaders/vertex\ shaders/TerrainVertexShader.vert";
+	std::string terrainFragPath = "shaders/fragment\ shaders/TerrainFragmentShader.frag";
 
-	std::string skyboxVertPath = "SkyBoxVertexShader.vert";
-	std::string skyboxFragPath = "SkyBoxFragmentShader.frag";
+	//std::string skyboxVertPath = "shaders/vertex\ shaders/SkyBoxVertexShader.vert";
+	//std::string skyboxFragPath = "shaders/fragment\ shaders/SkyBoxFragmentShader.frag";
 
-	skyboxShaderProgram = new Shader(skyboxVertPath, skyboxFragPath);
+	skybox = new Skybox(camera,Width,Height);
+
+	/*skyboxShaderProgram = new Shader(skyboxVertPath, skyboxFragPath);
 
 	{
 		Timer timer;
 		InitSkyBox();
 		std::cout << "Skybox loading time:\n";
-	}
-	std::cout << "\n\n";
+	}*/
+	//std::cout << "\n\n";
 
 	terrainShaderProgram = new Shader(terrainVertPath, terrainFragPath);
 
 	objectShaderProgram = new Shader(objectVertPath, objectFragPath);
 	objectShaderProgram->SetActive();
 	objectShaderProgram->setVec3("dirLight.direction", glm::vec3(-0.2f, -1.0f, 1.0f));
-	objectShaderProgram->setVec3("dirLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+	objectShaderProgram->setVec3("dirLight.ambient", glm::vec3(.5f, .5f, .5f));
 	objectShaderProgram->setVec3("dirLight.diffuse", glm::vec3(0.9f, 0.9f, 0.9f));
 	objectShaderProgram->setVec3("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
@@ -201,12 +214,7 @@ void Renderer::render_scene()
 	}
 
 	if (renderSkyBox)
-	{
-		// Disabling face culling for the skybox, because it's not necessary
-		glDisable(GL_CULL_FACE);
-		DrawSkyBox();
-		glEnable(GL_CULL_FACE);
-	}
+		skybox->draw();
 
 	glfwSwapBuffers(window);
 	glfwPollEvents();

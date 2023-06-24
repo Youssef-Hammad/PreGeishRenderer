@@ -3,7 +3,7 @@ layout (location = 0) in vec3 inPos;
 
 out vec3 texCoords;
 
-// We don't need a model matrix here since the sky is always moving with the camera
+// We don't need a model matrix here since the sky is always moving with the CAMERA
 uniform mat4 projection;
 uniform mat4 view;
 

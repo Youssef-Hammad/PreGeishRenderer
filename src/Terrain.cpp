@@ -1,4 +1,8 @@
 #include "Terrain.h"
+#include "Texture.h"
+#include "Shader.h"
+#include <stb_image.h>
+#include <glad/glad.h>
 
 Terrain::Terrain(int gridX, int gridZ, std::string _texturePath, Shader* _shaderProgram, std::string heightMapPath)
 {

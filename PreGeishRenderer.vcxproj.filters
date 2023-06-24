@@ -15,83 +15,92 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Shader.cpp">
+    <ClCompile Include="src\Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stb_image.cpp">
+    <ClCompile Include="src\stb_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="fast_obj.cpp">
+    <ClCompile Include="src\fast_obj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderableObject.cpp">
+    <ClCompile Include="src\RenderableObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
+    <ClCompile Include="src\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Renderer.cpp">
+    <ClCompile Include="src\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Texture.cpp">
+    <ClCompile Include="src\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Terrain.cpp">
+    <ClCompile Include="src\Terrain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="glad.c">
+    <ClCompile Include="src\glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Skybox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ObjectVertexShader.vert">
+    <None Include="shaders\vertex shaders\ObjectVertexShader.vert">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="ObjectFragmentShader.frag">
+    <None Include="shaders\fragment shaders\ObjectFragmentShader.frag">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="TerrainVertexShader.vert">
+    <None Include="shaders\vertex shaders\TerrainVertexShader.vert">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="TerrainFragmentShader.frag">
+    <None Include="shaders\fragment shaders\TerrainFragmentShader.frag">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="SkyBoxVertexShader.vert">
+    <None Include="shaders\vertex shaders\SkyBoxVertexShader.vert">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="SkyBoxFragmentShader.frag">
+    <None Include="shaders\fragment shaders\SkyBoxFragmentShader.frag">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Shader.h">
+    <ClInclude Include="include\Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="stb_image.h">
+    <ClInclude Include="include\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="fast_obj.h">
+    <ClInclude Include="include\fast_obj.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderableObject.h">
+    <ClInclude Include="include\RenderableObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
+    <ClInclude Include="include\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Renderer.h">
+    <ClInclude Include="include\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Texture.h">
+    <ClInclude Include="include\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Terrain.h">
+    <ClInclude Include="include\Terrain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h">
+    <ClInclude Include="include\Timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Initializer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Skybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

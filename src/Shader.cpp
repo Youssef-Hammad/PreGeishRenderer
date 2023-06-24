@@ -1,4 +1,8 @@
 #include "Shader.h"
+#include <glad/glad.h>
+#include <fstream>
+#include <sstream>
+#include <glm/glm/gtc/type_ptr.hpp>
 
 Shader::Shader(std::string vertexPath, std::string fragmentPath)
 {

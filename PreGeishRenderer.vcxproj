@@ -29,26 +29,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -145,35 +145,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="fast_obj.cpp" />
-    <ClCompile Include="glad.c" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="RenderableObject.cpp" />
-    <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="stb_image.cpp" />
-    <ClCompile Include="Terrain.cpp" />
-    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="src\Skybox.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\fast_obj.cpp" />
+    <ClCompile Include="src\glad.c" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\RenderableObject.cpp" />
+    <ClCompile Include="src\Renderer.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
+    <ClCompile Include="src\stb_image.cpp" />
+    <ClCompile Include="src\Terrain.cpp" />
+    <ClCompile Include="src\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ObjectFragmentShader.frag" />
-    <None Include="ObjectVertexShader.vert" />
-    <None Include="SkyBoxFragmentShader.frag" />
-    <None Include="SkyBoxVertexShader.vert" />
-    <None Include="TerrainFragmentShader.frag" />
-    <None Include="TerrainVertexShader.vert" />
+    <None Include="shaders\fragment shaders\ObjectFragmentShader.frag" />
+    <None Include="shaders\vertex shaders\ObjectVertexShader.vert" />
+    <None Include="shaders\fragment shaders\SkyBoxFragmentShader.frag" />
+    <None Include="shaders\vertex shaders\SkyBoxVertexShader.vert" />
+    <None Include="shaders\fragment shaders\TerrainFragmentShader.frag" />
+    <None Include="shaders\vertex shaders\TerrainVertexShader.vert" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="fast_obj.h" />
-    <ClInclude Include="RenderableObject.h" />
-    <ClInclude Include="Renderer.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="stb_image.h" />
-    <ClInclude Include="Terrain.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="Timer.h" />
+    <ClInclude Include="include\Camera.h" />
+    <ClInclude Include="include\fast_obj.h" />
+    <ClInclude Include="include\Initializer.h" />
+    <ClInclude Include="include\RenderableObject.h" />
+    <ClInclude Include="include\Renderer.h" />
+    <ClInclude Include="include\Shader.h" />
+    <ClInclude Include="include\Skybox.h" />
+    <ClInclude Include="include\stb_image.h" />
+    <ClInclude Include="include\Terrain.h" />
+    <ClInclude Include="include\Texture.h" />
+    <ClInclude Include="include\Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

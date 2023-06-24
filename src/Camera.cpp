@@ -1,9 +1,12 @@
 #include "Camera.h"
+#include <iostream>
+#include <glad/glad.h>
 
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch) 
 	: Position(position), WorldUp(up), Yaw(yaw), Pitch(pitch),
 	Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
 {
+	//std::cout << INIT_POSITION.x << " " << INIT_POSITION.y << " " << INIT_POSITION.z << "\n" << position.x << " " << position.y << " " << position.z << std::endl;
 	Update_Camera_Vectors();
 }
 
@@ -28,7 +31,7 @@ void Camera::Process_Keyboard(Camera_Movement direction, float deltaTime)
 	//Update_Camera_Vectors();
 }
 
-void Camera::Process_Mouse_Movement(float xoffset, float yoffset, GLboolean constraintPitch)
+void Camera::Process_Mouse_Movement(float xoffset, float yoffset, bool constraintPitch)
 {
 
 	xoffset *= MouseSensitivity;
