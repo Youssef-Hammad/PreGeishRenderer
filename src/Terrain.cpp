@@ -8,7 +8,7 @@ Terrain::Terrain(int gridX, int gridZ, std::string _texturePath, Shader* _shader
 {
 	x = gridX * SIZE;
 	z = gridZ * SIZE;
-	texture = new Texture(GL_TEXTURE0, _texturePath, glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f), 2, 0);
+	texture = new Texture(GL_TEXTURE0, _texturePath, NORMAL_VEC, NORMAL_VEC, NORMAL_VEC, 2, SHINE);
 	shaderProgram = _shaderProgram;
 	generateTerrain(heightMapPath);
 }

@@ -4,7 +4,10 @@
 #define TERRAIN_H
 
 #include <glm/glm/gtc/matrix_transform.hpp>
-#include <iostream>
+#include <string>
+
+const glm::vec3 NORMAL_VEC = glm::vec3(1.0f);
+const float SHINE = 0;
 
 class Texture;
 class Shader;

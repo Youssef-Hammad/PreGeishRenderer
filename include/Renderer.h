@@ -4,7 +4,6 @@
 #define RENDERER_H
 
 
-
 #include <iostream>
 #include <vector>
 #include <glm/glm/glm.hpp>
@@ -14,6 +13,7 @@ class Camera;
 class Skybox;
 class Terrain;
 class RenderableObject;
+class vector;
 
 struct GLFWwindow;
 
@@ -51,11 +51,9 @@ public:
 
 	Renderer(int width, int height, std::string window_name);
 	void render_scene();
-	void InitSkyBox();
 	void ToggleSkyBox();
 	void AddObj(std::string path, glm::vec3 pos);
 	void AddTerrain();
-	void DrawSkyBox();
 
 	~Renderer();
 };

@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef CAMERA_H
-#define CAMERA_H
-
 #include <glm/glm/gtc/matrix_transform.hpp>
 
 // Defines several possible options for CAMERA movement.
@@ -20,13 +17,14 @@ const float PITCH = 0.0f;
 const float SPEED = 2.5f;
 const float SENSITIVITY = 0.1f;
 const float ZOOM = 45.0f;
-const glm::vec3 INIT_POSITION(0.0f, 2.0f, 0.0f);
-const glm::vec3 INIT_UP(0.0f, 1.0f, 0.0f);
+const glm::vec3 INIT_POSITION = { 0.0f, 2.0f, 0.0f };
+const glm::vec3 INIT_UP = glm::vec3(0.0f, 1.0f, 0.0f);
 
 class Camera
 {
 private:
 	void Update_Camera_Vectors();
+
 public:
 	// Camera Attributes
 	glm::vec3 Position;
@@ -45,12 +43,10 @@ public:
 	float Zoom;
 
 
-	Camera(glm::vec3 position = glm::vec3(60.0f, 2.0f, 60.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
+	Camera(glm::vec3 position = INIT_POSITION, glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
 	glm::mat4 GetViewMatrix();
 	void Process_Keyboard(Camera_Movement direction, float deltaTime);
 	void Process_Mouse_Movement(float xoffset, float yoffset, bool constraintPitch = true);
 	void Process_Mouse_Scroll(float yoffset);
 
 };
-
-#endif // !CAMERA_H
