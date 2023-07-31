@@ -2,9 +2,9 @@
 3D Rendering Engine written in C++ using OpenGL. This is an ongoing project, usually a new feature is added when I learn more about a certain topic in computer graphics.
 
 ## Table of content
-- [Demo](#Demo)
-- [Features and Trello board](#Features-and-Trello-board)
-- [External Libraries and Resources](#External-Libraries-and-Resources)
+- [Demo](#demo)
+- [Features and Trello board](#features-and-trello-board)
+- [External Libraries and Resources](#external-libraries-and-resources)
 
 ## Demo
 [Youtube Video](https://www.youtube.com/watch?v=E_M3MYtZRSY)<br/>
