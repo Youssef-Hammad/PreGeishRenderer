@@ -13,14 +13,16 @@ enum Camera_Movement
 	DOWN
 };
 
+struct GLFWwindow;
+
 // Default CAMERA values
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
-const float SPEED = 2.5f;
+const float SPEED = 20.f;
 const float SENSITIVITY = 0.1f;
-const float ZOOM = 45.0f;
-const glm::vec3 INIT_POSITION = { 30.0f, 2.0f, 0.0f };
-const glm::vec3 INIT_UP = glm::vec3(0.0f, 1.0f, 0.0f);
+const float DEFAULT_ZOOM = 45.0f;
+const glm::vec3 DEFAULT_POSITION = glm::vec3( 50.0f, 2.0f, 50.0f );
+const glm::vec3 WORLD_UP = glm::vec3(0.0f, 1.0f, 0.0f);
 
 class Camera
 {
@@ -35,7 +37,6 @@ public:
 	glm::vec3 Front;
 	glm::vec3 Up;
 	glm::vec3 Right;
-	glm::vec3 WorldUp;
 
 	// Euler angles
 	float Yaw; // Y axis (Right/Left)
@@ -50,10 +51,12 @@ public:
 	bool firstMouseMove;
 
 
-	Camera(float width, float height, glm::vec3 position = INIT_POSITION, glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
+	Camera(float width, float height, float yaw = YAW, float pitch = PITCH);
 	glm::mat4 GetViewMatrix();
-	void Process_Keyboard(Camera_Movement direction, float deltaTime);
+	void Process_Keyboard(GLFWwindow* window, float deltaTime);
 	void Process_Mouse_Movement(float xoffset, float yoffset, bool constraintPitch = true);
 	void Process_Mouse_Scroll(float yoffset);
+	inline void Move(Camera_Movement direction, float deltaTime);
+	void SetPosition(glm::vec3 newPos);
 
 };

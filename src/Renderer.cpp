@@ -28,31 +28,11 @@ void Renderer::processInput(GLFWwindow* window)
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 
-	float cameraSpeed = 1.5f * deltaTime;
-	if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-		cameraSpeed = deltaTime * 0.6f;
-
-	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-		cameraSpeed = deltaTime * 20.0f;
-
-
-
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		camera->Process_Keyboard(FORWARD, cameraSpeed);
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		camera->Process_Keyboard(BACKWARD, cameraSpeed);
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		camera->Process_Keyboard(RIGHT, cameraSpeed);
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		camera->Process_Keyboard(LEFT, cameraSpeed);
-	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-		camera->Process_Keyboard(UP, cameraSpeed);
-	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
-		camera->Process_Keyboard(DOWN, cameraSpeed);
+	camera->Process_Keyboard(window, deltaTime);
 }
 
 Renderer::Renderer(int width, int height, std::string window_name)
-	: Width(width), Height(height)
+	: Width(width), Height(height), Window_Name(window_name)
 {
 	wireframe = false;
 	deltaTime = 0.0f;
@@ -68,7 +48,7 @@ Renderer::Renderer(int width, int height, std::string window_name)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	window = glfwCreateWindow(Width, Height, window_name.c_str(), NULL, NULL);
+	window = glfwCreateWindow(Width, Height, Window_Name.c_str(), NULL, NULL);
 
 	if (window == NULL)
 	{
@@ -92,29 +72,11 @@ Renderer::Renderer(int width, int height, std::string window_name)
 
 	glViewport(0, 0, Width, Height);
 
-	std::string objectVertPath = "shaders/vertex\ shaders/ObjectVertexShader.vert";
-	std::string objectFragPath = "shaders/fragment\ shaders/ObjectFragmentShader.frag";
-
-	std::string terrainVertPath = "shaders/vertex\ shaders/TerrainVertexShader.vert";
-	std::string terrainFragPath = "shaders/fragment\ shaders/TerrainFragmentShader.frag";
-
-	//std::string skyboxVertPath = "shaders/vertex\ shaders/SkyBoxVertexShader.vert";
-	//std::string skyboxFragPath = "shaders/fragment\ shaders/SkyBoxFragmentShader.frag";
-
 	skybox = new Skybox(camera,Width,Height);
 
-	/*skyboxShaderProgram = new Shader(skyboxVertPath, skyboxFragPath);
+	terrainShaderProgram = new Shader(Ter_vShader, Ter_fShader);
 
-	{
-		Timer timer;
-		InitSkyBox();
-		std::cout << "Skybox loading time:\n";
-	}*/
-	//std::cout << "\n\n";
-
-	terrainShaderProgram = new Shader(terrainVertPath, terrainFragPath);
-
-	objectShaderProgram = new Shader(objectVertPath, objectFragPath);
+	objectShaderProgram = new Shader(RO_vShader, RO_fShader);
 	objectShaderProgram->SetActive();
 	objectShaderProgram->setVec3("dirLight.direction", glm::vec3(-0.2f, -1.0f, 1.0f));
 	objectShaderProgram->setVec3("dirLight.ambient", glm::vec3(.5f, .5f, .5f));
@@ -141,50 +103,13 @@ Renderer::Renderer(int width, int height, std::string window_name)
 
 void Renderer::render_scene()
 {
-	float currentFrame = glfwGetTime();
-	// Time taken to render a single frame calculated in seconds
-	deltaTime = currentFrame - lastFrame;
-	lastFrame = currentFrame;
-
-	// Calculating the number of frames per second (law el geish nasak leh bte3mel 1.0/deltaTime, basically cross multiplication)
-	// Example: it takes 0.008s to render 1 frame, so it will render (1/0.008) frames per second
-	std::string FPS = std::to_string(1.0 / deltaTime);
-	// Converting deltaTime to milliseconds
-	std::string ms = std::to_string(deltaTime * 1000);
-	std::string newTitle = "Pre Geish Renderer - " + FPS + "FPS    /    " + ms + "ms";
-	glfwSetWindowTitle(window, newTitle.c_str());
+	CalculateFrames();
 	processInput(window);
 	glClearColor(0.3f, 0.2f, 0.2f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	objectShaderProgram->SetActive();
-	
-	glm::mat4 view = camera->GetViewMatrix();
-	objectShaderProgram->setMat4("view", view);
-
-	glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)Width / (float)Height, 0.1f, 1000.0f);
-	objectShaderProgram->setMat4("projection", projection);
-
-	objectShaderProgram->setVec3("viewPos", camera->Position);
-
-	for (int i = 0; i < objects.size(); i++)
-	{
-		//std::cout << "Drawing" << std::endl;
-		objects[i]->draw();
-	}
-
-	terrainShaderProgram->SetActive();
-	terrainShaderProgram->setMat4("view", view);
-
-	projection = glm::perspective(glm::radians(camera->Zoom), (float)Width / (float)Height, 0.1f, 1000.0f);
-	terrainShaderProgram->setMat4("projection", projection);
-
-	terrainShaderProgram->setVec3("viewPos", camera->Position);
-
-	for (int i = 0; i < terrains.size(); i++)
-	{
-		terrains[i]->draw();
-	}
+	DrawObj();
+	DrawTerrain();
 
 	if (renderSkyBox)
 		skybox->draw();
@@ -210,4 +135,56 @@ void Renderer::AddTerrain()
 {
 	Terrain* terrain = new Terrain(0,0,"test_resources\\grass.png",terrainShaderProgram,"test_resources\\JnBQ0y9Q.png");
 	terrains.push_back(terrain);
+}
+
+inline void Renderer::DrawObj()
+{
+	objectShaderProgram->SetActive();
+
+	glm::mat4 view = camera->GetViewMatrix();
+	objectShaderProgram->setMat4("view", view);
+
+	glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)Width / (float)Height, 0.1f, 1000.0f);
+	objectShaderProgram->setMat4("projection", projection);
+
+	objectShaderProgram->setVec3("viewPos", camera->Position);
+
+	for (int i = 0; i < objects.size(); i++)
+	{
+		//std::cout << "Drawing" << std::endl;
+		objects[i]->draw();
+	}
+}
+
+inline void Renderer::DrawTerrain()
+{
+	glm::mat4 view = camera->GetViewMatrix();
+	glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)Width / (float)Height, 0.1f, 1000.0f);
+	terrainShaderProgram->SetActive();
+	terrainShaderProgram->setMat4("view", view);
+
+	projection = glm::perspective(glm::radians(camera->Zoom), (float)Width / (float)Height, 0.1f, 1000.0f);
+	terrainShaderProgram->setMat4("projection", projection);
+
+	terrainShaderProgram->setVec3("viewPos", camera->Position);
+	for (int i = 0; i < terrains.size(); i++)
+	{
+		terrains[i]->draw();
+	}
+}
+
+inline void Renderer::CalculateFrames()
+{
+	float currentFrame = glfwGetTime();
+	// Time taken to render a single frame calculated in seconds
+	deltaTime = currentFrame - lastFrame;
+	lastFrame = currentFrame;
+
+	// Calculating the number of frames per second (law el geish nasak leh bte3mel 1.0/deltaTime, basically cross multiplication)
+	// Example: it takes 0.008s to render 1 frame, so it will render (1/0.008) frames per second
+	std::string FPS = std::to_string(1.0 / deltaTime);
+	// Converting deltaTime to milliseconds
+	std::string ms = std::to_string(deltaTime * 1000);
+	std::string newTitle = Window_Name + " - " + FPS + " FPS    /    " + ms + " ms";
+	glfwSetWindowTitle(window, newTitle.c_str());
 }

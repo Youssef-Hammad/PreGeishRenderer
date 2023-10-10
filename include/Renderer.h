@@ -14,6 +14,8 @@ class Skybox;
 class Terrain;
 class RenderableObject;
 
+
+
 struct GLFWwindow;
 
 typedef unsigned int GLenum;
@@ -25,6 +27,12 @@ private:
 	Shader* terrainShaderProgram;
 	Shader* skyboxShaderProgram;
 	GLenum currentTextureNumber;
+	std::string Window_Name;
+
+	const std::string RO_vShader = "shaders/vertex\ shaders/ObjectVertexShader.vert";
+	const std::string RO_fShader = "shaders/fragment\ shaders/ObjectFragmentShader.frag";
+	const std::string Ter_vShader = "shaders/vertex\ shaders/TerrainVertexShader.vert";
+	const std::string Ter_fShader = "shaders/fragment\ shaders/TerrainFragmentShader.frag";
 
 	void processInput(GLFWwindow* window);
 
@@ -49,6 +57,9 @@ public:
 	void ToggleSkyBox();
 	void AddObj(std::string path, glm::vec3 pos);
 	void AddTerrain();
+	inline void DrawObj();
+	inline void DrawTerrain();
+	inline void CalculateFrames();
 
 	~Renderer();
 };
