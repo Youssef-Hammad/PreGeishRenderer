@@ -8,7 +8,9 @@ enum Camera_Movement
 	FORWARD,
 	BACKWARD,
 	LEFT,
-	RIGHT
+	RIGHT,
+	UP,
+	DOWN
 };
 
 // Default CAMERA values
@@ -17,7 +19,7 @@ const float PITCH = 0.0f;
 const float SPEED = 2.5f;
 const float SENSITIVITY = 0.1f;
 const float ZOOM = 45.0f;
-const glm::vec3 INIT_POSITION = { 0.0f, 2.0f, 0.0f };
+const glm::vec3 INIT_POSITION = { 30.0f, 2.0f, 0.0f };
 const glm::vec3 INIT_UP = glm::vec3(0.0f, 1.0f, 0.0f);
 
 class Camera
@@ -27,6 +29,8 @@ private:
 
 public:
 	// Camera Attributes
+	float lastX;
+	float lastY;
 	glm::vec3 Position;
 	glm::vec3 Front;
 	glm::vec3 Up;
@@ -42,8 +46,11 @@ public:
 	float MouseSensitivity;
 	float Zoom;
 
+	//flags
+	bool firstMouseMove;
 
-	Camera(glm::vec3 position = INIT_POSITION, glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
+
+	Camera(float width, float height, glm::vec3 position = INIT_POSITION, glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH);
 	glm::mat4 GetViewMatrix();
 	void Process_Keyboard(Camera_Movement direction, float deltaTime);
 	void Process_Mouse_Movement(float xoffset, float yoffset, bool constraintPitch = true);

@@ -2,12 +2,13 @@
 #include <glad/glad.h>
 #include <iostream>
 
-Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
-	: Position(position), WorldUp(up), Yaw(yaw), Pitch(pitch),
+Camera::Camera(float  width, float height, glm::vec3 position, glm::vec3 up, float yaw, float pitch)
+	: lastX(width/2.0f), lastY(height/2.0f), Position(position), WorldUp(up), Yaw(yaw), Pitch(pitch),
 	Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
 {
 	std::cout << INIT_POSITION.x << " " << INIT_POSITION.y << " " << INIT_POSITION.z << "\n" << position.x << " " << position.y << " " << position.z << std::endl;
 	std::cout << yaw << " " << pitch << std::endl;
+	firstMouseMove = true;
 	Update_Camera_Vectors();
 }
 
@@ -20,16 +21,29 @@ glm::mat4 Camera::GetViewMatrix()
 void Camera::Process_Keyboard(Camera_Movement direction, float deltaTime)
 {
 	float velocity = MovementSpeed * deltaTime;
-	
-	if (direction == FORWARD)
-		Position += Front * velocity;
-	if (direction == BACKWARD)
-		Position -= Front * velocity;
-	if (direction == RIGHT)
-		Position += Right * velocity;
-	if (direction == LEFT)
-		Position -= Right * velocity;
-	//Update_Camera_Vectors();
+	glm::vec3 newValue = glm::vec3(0);
+	switch (direction)
+	{
+	case FORWARD:
+		newValue += Front * velocity;
+		break;
+	case BACKWARD:
+		newValue -= Front * velocity;
+		break;
+	case RIGHT:
+		newValue += Right * velocity;
+		break;
+	case LEFT:
+		newValue -= Right * velocity;
+		break;
+	case UP:
+		newValue += Up * velocity;
+		break;
+	case DOWN:
+		newValue -= Up * velocity;
+		break;
+	}
+	Position += newValue;
 }
 
 void Camera::Process_Mouse_Movement(float xoffset, float yoffset, bool constraintPitch)

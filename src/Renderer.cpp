@@ -15,10 +15,7 @@ Renderer::~Renderer()
 	delete objectShaderProgram;
 	delete terrainShaderProgram;
 	delete skyboxShaderProgram;
-	glDeleteBuffers(1, &SkyBoxVBO);
-	glDeleteBuffers(1, &SkyBoxEBO);
-	glDeleteVertexArrays(1, &SkyBoxVAO);
-	glDeleteTextures(1, &SkyBoxTexture);
+	delete skybox;
 	for (int i = 0; i < objects.size(); i++)
 		delete objects[i];
 	for (int i = 0; i < terrains.size(); i++)
@@ -38,6 +35,8 @@ void Renderer::processInput(GLFWwindow* window)
 	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
 		cameraSpeed = deltaTime * 20.0f;
 
+
+
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera->Process_Keyboard(FORWARD, cameraSpeed);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -46,22 +45,22 @@ void Renderer::processInput(GLFWwindow* window)
 		camera->Process_Keyboard(RIGHT, cameraSpeed);
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 		camera->Process_Keyboard(LEFT, cameraSpeed);
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+		camera->Process_Keyboard(UP, cameraSpeed);
+	if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+		camera->Process_Keyboard(DOWN, cameraSpeed);
 }
 
 Renderer::Renderer(int width, int height, std::string window_name)
+	: Width(width), Height(height)
 {
-	Width = width;
-	Height = height;
-	lastX = width / 2.0f;
-	lastY = height / 2.0f;
-	firstMouseMove = true;
 	wireframe = false;
 	deltaTime = 0.0f;
 	lastFrame = 0.0f;
 	currentTextureNumber = GL_TEXTURE0;
 	renderSkyBox = false;
 
-	camera = new Camera();
+	camera = new Camera(width,height);
 
 	stbi_set_flip_vertically_on_load(true);
 	glfwInit();
@@ -123,10 +122,10 @@ Renderer::Renderer(int width, int height, std::string window_name)
 	objectShaderProgram->setVec3("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
 	terrainShaderProgram->SetActive();
-	objectShaderProgram->setVec3("dirLight.direction", glm::vec3(-0.2f, -1.0f, 1.0f));
-	objectShaderProgram->setVec3("dirLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
-	objectShaderProgram->setVec3("dirLight.diffuse", glm::vec3(0.9f, 0.9f, 0.9f));
-	objectShaderProgram->setVec3("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+	terrainShaderProgram->setVec3("dirLight.direction", glm::vec3(-0.2f, -1.0f, 1.0f));
+	terrainShaderProgram->setVec3("dirLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+	terrainShaderProgram->setVec3("dirLight.diffuse", glm::vec3(0.9f, 0.9f, 0.9f));
+	terrainShaderProgram->setVec3("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
 
 	// Enabling depth testing for 3D movement
 	glEnable(GL_DEPTH_TEST);

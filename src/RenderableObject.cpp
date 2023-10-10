@@ -75,7 +75,7 @@ void RenderableObject::load_vertices()
 			// |  /		 \	|
 			// | /		  \	|
 			// |/		   \|
-			// 2------------3
+			// 3------------2
 			const int indicies_order[] = { 0,1,2,0,2,3 }; 
 
 			//Splitting 4-index faces into 2 3-index faces
@@ -103,14 +103,14 @@ void RenderableObject::load_textures()
 	// counter for the number of vertices that sample from current_texture_idx
 	int vertices_using_current_texture = 0;
 	// Current texture id (that -1 is to make sure it's not set before)
-	int current_texture_idx = -1;
+	int current_texture_idx;
 
 	// Loop that populates the "texture_order" vector 
 	// (check the comment on the vector in RenderableObject.h for more info)
 	for (int i = 0; i < mesh->face_count; i++)
 	{
 		//first iteration
-		if (current_texture_idx == -1)
+		if (i==0)
 			current_texture_idx = mesh->face_materials[i];
 		else if (current_texture_idx != mesh->face_materials[i])
 		{

@@ -13,7 +13,6 @@ class Camera;
 class Skybox;
 class Terrain;
 class RenderableObject;
-class vector;
 
 struct GLFWwindow;
 
@@ -26,7 +25,6 @@ private:
 	Shader* terrainShaderProgram;
 	Shader* skyboxShaderProgram;
 	GLenum currentTextureNumber;
-	unsigned int SkyBoxVAO, SkyBoxVBO, SkyBoxEBO, SkyBoxTexture;
 
 	void processInput(GLFWwindow* window);
 
@@ -44,9 +42,6 @@ public:
 	//Camera Related Variables
 	float deltaTime;
 	float lastFrame;
-	bool firstMouseMove;
-	float lastX;
-	float lastY;
 	bool renderSkyBox;
 
 	Renderer(int width, int height, std::string window_name);

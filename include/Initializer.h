@@ -12,7 +12,7 @@
 const unsigned int WINDOW_WIDTH = 800;
 const unsigned int WINDOW_HEIGHT = 600;
 
-Renderer renderer(WINDOW_WIDTH, WINDOW_HEIGHT, "Pre Geish Renderer");
+Renderer renderer = Renderer(WINDOW_WIDTH, WINDOW_HEIGHT, "Pre Geish Renderer");
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -34,18 +34,18 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-	if (renderer.firstMouseMove)
+	if (renderer.camera->firstMouseMove)
 	{
-		renderer.lastX = (float)xpos;
-		renderer.lastY = (float)ypos;
-		renderer.firstMouseMove = false;
+		renderer.camera->lastX = (float)xpos;
+		renderer.camera->lastY = (float)ypos;
+		renderer.camera->firstMouseMove = false;
 	}
 
-	float xoffset = (float)xpos - renderer.lastX;
-	float yoffset = renderer.lastY - (float)ypos;
+	float xoffset = (float)xpos - renderer.camera->lastX;
+	float yoffset = renderer.camera->lastY - (float)ypos;
 
-	renderer.lastX = (float)xpos;
-	renderer.lastY = (float)ypos;
+	renderer.camera->lastX = (float)xpos;
+	renderer.camera->lastY = (float)ypos;
 
 	renderer.camera->Process_Mouse_Movement(xoffset, yoffset);
 }
