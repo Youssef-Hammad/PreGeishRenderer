@@ -8,6 +8,7 @@
 #include <glad/glad.h>
 #include "Timer.h"
 #include <GLFW/glfw3.h>
+#include "Water.h"
 
 Renderer::~Renderer()
 {
@@ -16,6 +17,7 @@ Renderer::~Renderer()
 	delete terrainShaderProgram;
 	delete skyboxShaderProgram;
 	delete skybox;
+	delete water;
 	for (int i = 0; i < objects.size(); i++)
 		delete objects[i];
 	for (int i = 0; i < terrains.size(); i++)
@@ -73,6 +75,7 @@ Renderer::Renderer(int width, int height, std::string window_name)
 	glViewport(0, 0, Width, Height);
 
 	skybox = new Skybox(camera,Width,Height);
+	water = new Water(glm::vec3(175,-.75,175));
 
 	terrainShaderProgram = new Shader(Ter_vShader, Ter_fShader);
 
@@ -110,6 +113,7 @@ void Renderer::render_scene()
 
 	DrawObj();
 	DrawTerrain();
+	DrawWater();
 
 	if (renderSkyBox)
 		skybox->draw();
@@ -187,4 +191,14 @@ inline void Renderer::CalculateFrames()
 	std::string ms = std::to_string(deltaTime * 1000);
 	std::string newTitle = Window_Name + " - " + FPS + " FPS    /    " + ms + " ms";
 	glfwSetWindowTitle(window, newTitle.c_str());
+}
+
+inline void Renderer::DrawWater()
+{
+	glm::mat4 view = camera->GetViewMatrix();
+	glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)Width / (float)Height, 0.1f, 1000.0f);
+	water->shader->SetActive();
+	water->shader->setMat4("view", view);
+	water->shader->setMat4("projection", projection);
+	water->draw();
 }

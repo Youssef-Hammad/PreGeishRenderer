@@ -13,6 +13,7 @@ class Camera;
 class Skybox;
 class Terrain;
 class RenderableObject;
+class Water;
 
 
 
@@ -43,6 +44,7 @@ public:
 	Skybox* skybox;
 	bool initSuccess;
 	Camera* camera;
+	Water* water;
 	int Width;
 	int Height;
 	bool wireframe;
@@ -60,6 +62,7 @@ public:
 	inline void DrawObj();
 	inline void DrawTerrain();
 	inline void CalculateFrames();
+	inline void DrawWater();
 
 	~Renderer();
 };

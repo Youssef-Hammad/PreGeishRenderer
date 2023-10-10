@@ -156,14 +156,17 @@
     <ClCompile Include="src\stb_image.cpp" />
     <ClCompile Include="src\Terrain.cpp" />
     <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\Water.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fragment shaders\ObjectFragmentShader.frag" />
+    <None Include="shaders\fragment shaders\WaterFragmentShader.frag" />
     <None Include="shaders\vertex shaders\ObjectVertexShader.vert" />
     <None Include="shaders\fragment shaders\SkyBoxFragmentShader.frag" />
     <None Include="shaders\vertex shaders\SkyBoxVertexShader.vert" />
     <None Include="shaders\fragment shaders\TerrainFragmentShader.frag" />
     <None Include="shaders\vertex shaders\TerrainVertexShader.vert" />
+    <None Include="shaders\vertex shaders\WaterVertexShader.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Camera.h" />
@@ -177,6 +180,7 @@
     <ClInclude Include="include\Terrain.h" />
     <ClInclude Include="include\Texture.h" />
     <ClInclude Include="include\Timer.h" />
+    <ClInclude Include="include\Water.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

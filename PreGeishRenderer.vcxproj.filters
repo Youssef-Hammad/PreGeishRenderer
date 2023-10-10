@@ -48,6 +48,9 @@
     <ClCompile Include="src\Skybox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Water.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\vertex shaders\ObjectVertexShader.vert">
@@ -68,6 +71,8 @@
     <None Include="shaders\fragment shaders\SkyBoxFragmentShader.frag">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="shaders\vertex shaders\WaterVertexShader.vert" />
+    <None Include="shaders\fragment shaders\WaterFragmentShader.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Shader.h">
@@ -101,6 +106,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Skybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Water.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
