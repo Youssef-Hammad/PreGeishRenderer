@@ -24,7 +24,6 @@ void Terrain::generateTerrain(std::string heightMapPath)
 	}
 
 	int VERTEX_COUNT = height;
-	std::cout << "Height: " << height << " Width: " << width << " Channels: " << nrChannels << std::endl;
 
 	int count = VERTEX_COUNT * VERTEX_COUNT;
 

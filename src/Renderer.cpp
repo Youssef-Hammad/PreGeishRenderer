@@ -75,7 +75,7 @@ Renderer::Renderer(int width, int height, std::string window_name)
 	glViewport(0, 0, Width, Height);
 
 	skybox = new Skybox(camera,Width,Height);
-	water = new Water(glm::vec3(175,-.75,175));
+	water = new Water(window, glm::vec3(175,-.75,175));
 
 	terrainShaderProgram = new Shader(Ter_vShader, Ter_fShader);
 
@@ -111,12 +111,21 @@ void Renderer::render_scene()
 	glClearColor(0.3f, 0.2f, 0.2f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	water->bindReflectionFrameBuffer();
 	DrawObj();
 	DrawTerrain();
 	DrawWater();
 
 	if (renderSkyBox)
 		skybox->draw();
+	water->unbindFrameBuffer();
+	DrawObj();
+	DrawTerrain();
+	DrawWater();
+
+	if (renderSkyBox)
+		skybox->draw();
+
 
 	glfwSwapBuffers(window);
 	glfwPollEvents();
