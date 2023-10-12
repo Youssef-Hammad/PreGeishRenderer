@@ -15,12 +15,15 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
+uniform vec4 plane;
+
 void main()
 {
 	// Converting vertex position to screen view
 	// Check https://learnopengl.com/Getting-started/Coordinate-Systems to remember
 	gl_Position = projection*view*model*vec4(inPos,1.0);
 	TexCoords = inTexCoords;
+	gl_ClipDistance[0] = dot(model*vec4(inPos,1.0),plane);
 
 	// The transpose(inverse()) part is to correctly calculate the normal coordinates even when a non-uniform scaling occurs. (I don't fully understand the math behind it)
 	Normal = mat3(transpose(inverse(model)))*inNormal; // Move normal to world space coordinates

@@ -94,6 +94,7 @@ void Skybox::draw()
 {
 	glDepthFunc(GL_LEQUAL);
 	glDisable(GL_CULL_FACE);
+	glDisable(GL_CLIP_DISTANCE0);
 
 	shaderProgram->SetActive();
 
@@ -111,4 +112,5 @@ void Skybox::draw()
 
 	glDepthFunc(GL_LESS);
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_CLIP_DISTANCE0);
 }

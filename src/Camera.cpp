@@ -102,6 +102,11 @@ void Camera::SetPosition(glm::vec3 newPos)
 	Position = newPos;
 }
 
+void Camera::invertPitch()
+{
+	Pitch *= -1;
+}
+
 inline void Camera::Move(Camera_Movement direction, float deltaTime)
 {
 	float velocity = MovementSpeed * deltaTime;

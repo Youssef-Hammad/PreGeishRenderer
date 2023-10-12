@@ -58,5 +58,6 @@ public:
 	void Process_Mouse_Scroll(float yoffset);
 	inline void Move(Camera_Movement direction, float deltaTime);
 	void SetPosition(glm::vec3 newPos);
+	void invertPitch();
 
 };

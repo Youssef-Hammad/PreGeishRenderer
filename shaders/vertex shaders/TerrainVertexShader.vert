@@ -12,9 +12,12 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
+uniform vec4 plane;
+
 void main()
 {
 	gl_Position = projection*view*model*vec4(inPos,1.0);
+	gl_ClipDistance[0] = dot(model*vec4(inPos,1.0),plane);
 	
 	//The multiplication here is for tiling the texture, the higher the number, the more tiles are made
 	//Once the coordinates go over 1.0 OpenGL starts again from 0.0 (more like the modulo concept)

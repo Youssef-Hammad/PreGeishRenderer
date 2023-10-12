@@ -7,7 +7,7 @@ struct GLFWwindow;
 
 class Water
 {
-	const float size = 50;
+	const float size = 399.5;
 	const std::string vShader = "shaders/vertex\ shaders/WaterVertexShader.vert";
 	const std::string fShader = "shaders/fragment\ shaders/WaterFragmentShader.frag";
 
@@ -20,6 +20,7 @@ class Water
 
 	glm::vec3 Position;
 public:
+	const float height = 0.7;
 	uint32_t VAO;
 	uint32_t VBO;
 	uint32_t ReflectionFrameBuffer;
@@ -32,12 +33,12 @@ public:
 
 
 	float vertices[18] = { 
-		-size,1,-size,
-		-size,1,size,
-		size,1,-size,
-		size,1,size,
-		size,1,-size,
-		-size,1,size
+		-size,height,-size,
+		-size,height,size,
+		size,height,-size,
+		size,height,size,
+		size,height,-size,
+		-size,height,size
 	};
 	Shader* shader;
 
@@ -50,8 +51,8 @@ public:
 	void initReflectionFBO();
 	void initRefractionFBO();
 	void bindFrameBuffer(uint32_t buffer, uint32_t width, uint32_t height);
-	void bindReflectionFrameBuffer();
-	void bindRefractionFrameBuffer();
+	void bindReflectionFrameBuffer(glm::vec4 plane);
+	void bindRefractionFrameBuffer(glm::vec4 plane);
 	void unbindFrameBuffer();
 	~Water();
 };

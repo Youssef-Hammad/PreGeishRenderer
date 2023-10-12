@@ -119,13 +119,15 @@ void Water::bindFrameBuffer(uint32_t buffer, uint32_t width, uint32_t height)
 	glViewport(0, 0, width, height);
 }
 
-void Water::bindReflectionFrameBuffer()
+void Water::bindReflectionFrameBuffer(glm::vec4 plane)
 {
+	shader->setVec4("plane", plane);
 	bindFrameBuffer(ReflectionFrameBuffer, REFLECTION_WIDTH, REFLECTION_HEIGHT);
 }
 
-void Water::bindRefractionFrameBuffer()
+void Water::bindRefractionFrameBuffer(glm::vec4 plane)
 {
+	shader->setVec4("plane", plane);
 	bindFrameBuffer(RefractionFrameBuffer, REFRACTION_WIDTH, REFRACTION_HEIGHT);
 }
 

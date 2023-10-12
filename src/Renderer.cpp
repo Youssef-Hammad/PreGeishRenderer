@@ -75,7 +75,9 @@ Renderer::Renderer(int width, int height, std::string window_name)
 	glViewport(0, 0, Width, Height);
 
 	skybox = new Skybox(camera,Width,Height);
-	water = new Water(window, glm::vec3(175,-.75,175));
+	water = new Water(window, glm::vec3(400,-1,400));
+	reflectionplane.w = water->height * -1;
+	refractionplane.w = water->height;
 
 	terrainShaderProgram = new Shader(Ter_vShader, Ter_fShader);
 
@@ -85,12 +87,16 @@ Renderer::Renderer(int width, int height, std::string window_name)
 	objectShaderProgram->setVec3("dirLight.ambient", glm::vec3(.5f, .5f, .5f));
 	objectShaderProgram->setVec3("dirLight.diffuse", glm::vec3(0.9f, 0.9f, 0.9f));
 	objectShaderProgram->setVec3("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+	objectShaderProgram->setVec4("plane", reflectionplane);
 
 	terrainShaderProgram->SetActive();
 	terrainShaderProgram->setVec3("dirLight.direction", glm::vec3(-0.2f, -1.0f, 1.0f));
 	terrainShaderProgram->setVec3("dirLight.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
 	terrainShaderProgram->setVec3("dirLight.diffuse", glm::vec3(0.9f, 0.9f, 0.9f));
 	terrainShaderProgram->setVec3("dirLight.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+	terrainShaderProgram->setVec4("plane", reflectionplane);
+
+
 
 	// Enabling depth testing for 3D movement
 	glEnable(GL_DEPTH_TEST);
@@ -106,19 +112,36 @@ Renderer::Renderer(int width, int height, std::string window_name)
 
 void Renderer::render_scene()
 {
+	glEnable(GL_CLIP_DISTANCE0);
 	CalculateFrames();
 	processInput(window);
 	glClearColor(0.3f, 0.2f, 0.2f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	water->bindReflectionFrameBuffer();
+	float distance = 2 * (camera->Position.y-water->height);
+	camera->Position.y -= distance;
+	camera->invertPitch();
+	currentPlane = reflectionplane;
+	water->bindReflectionFrameBuffer(reflectionplane);
+	DrawObj();
+	DrawTerrain();
+	DrawWater();
+	camera->Position.y += distance;
+	camera->invertPitch();
+
+	currentPlane = refractionplane;
+	water->bindRefractionFrameBuffer(refractionplane);
 	DrawObj();
 	DrawTerrain();
 	DrawWater();
 
 	if (renderSkyBox)
 		skybox->draw();
+	
 	water->unbindFrameBuffer();
+	glDisable(GL_CLIP_DISTANCE0);
+
+	currentPlane = glm::vec4(0, -1, 0, 100000);
 	DrawObj();
 	DrawTerrain();
 	DrawWater();
@@ -153,7 +176,7 @@ void Renderer::AddTerrain()
 inline void Renderer::DrawObj()
 {
 	objectShaderProgram->SetActive();
-
+	objectShaderProgram->setVec4("plane", currentPlane);
 	glm::mat4 view = camera->GetViewMatrix();
 	objectShaderProgram->setMat4("view", view);
 
@@ -174,6 +197,7 @@ inline void Renderer::DrawTerrain()
 	glm::mat4 view = camera->GetViewMatrix();
 	glm::mat4 projection = glm::perspective(glm::radians(camera->Zoom), (float)Width / (float)Height, 0.1f, 1000.0f);
 	terrainShaderProgram->SetActive();
+	terrainShaderProgram->setVec4("plane", currentPlane);
 	terrainShaderProgram->setMat4("view", view);
 
 	projection = glm::perspective(glm::radians(camera->Zoom), (float)Width / (float)Height, 0.1f, 1000.0f);
