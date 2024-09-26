@@ -26,6 +26,9 @@ Water::Water(GLFWwindow* _window, glm::vec3 position)
 
 	initReflectionFBO();
 	initRefractionFBO();
+	shader->SetActive();
+	shader->setInt("reflectTex", 0);
+	shader->setInt("refractTex", 1);
 }
 
 Water::~Water()
@@ -38,15 +41,20 @@ Water::~Water()
 	glDeleteTextures(1, &ReflectionTexture);
 	glDeleteTextures(1, &RefractionTexture);
 	glDeleteRenderbuffers(1, &ReflectionDepthBuffer);
-	glDeleteRenderbuffers(1, &RefractionDepthBuffer);
+	glDeleteTextures(1, &RefractionDepthTexture);
 }
 
 void Water::draw()
 {
 	shader->SetActive();
 	glBindVertexArray(VAO);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, ReflectionTexture);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, RefractionTexture);
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, Position);
+	model = glm::scale(model, glm::vec3(size, 1, size));
 	shader->setMat4("model", model);
 	glDrawArrays(GL_TRIANGLES,0,6);
 	glBindVertexArray(0);
@@ -108,7 +116,7 @@ void Water::initRefractionFBO()
 {
 	RefractionFrameBuffer = GenFBO();
 	RefractionTexture = CreateTextureAttachment(REFRACTION_WIDTH, REFRACTION_HEIGHT);
-	RefractionDepthBuffer = CreateDepthBufferAttachment(REFRACTION_WIDTH, REFRACTION_HEIGHT);
+	RefractionDepthTexture = CreateDepthTextureAttachment(REFRACTION_WIDTH, REFRACTION_HEIGHT);
 	unbindFrameBuffer();
 }
 

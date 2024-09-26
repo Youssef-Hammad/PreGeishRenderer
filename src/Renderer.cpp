@@ -75,8 +75,8 @@ Renderer::Renderer(int width, int height, std::string window_name)
 	glViewport(0, 0, Width, Height);
 
 	skybox = new Skybox(camera,Width,Height);
-	water = new Water(window, glm::vec3(400,-1,400));
-	reflectionplane.w = water->height * -1;
+	water = new Water(window, glm::vec3(400,30,400));
+	reflectionplane.w = water->height*-1;
 	refractionplane.w = water->height;
 
 	terrainShaderProgram = new Shader(Ter_vShader, Ter_fShader);
@@ -112,42 +112,33 @@ Renderer::Renderer(int width, int height, std::string window_name)
 
 void Renderer::render_scene()
 {
-	glEnable(GL_CLIP_DISTANCE0);
 	CalculateFrames();
 	processInput(window);
-	glClearColor(0.3f, 0.2f, 0.2f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_CLIP_DISTANCE0);
 
 	float distance = 2 * (camera->Position.y-water->height);
 	camera->Position.y -= distance;
 	camera->invertPitch();
 	currentPlane = reflectionplane;
 	water->bindReflectionFrameBuffer(reflectionplane);
-	DrawObj();
-	DrawTerrain();
-	DrawWater();
+	Draw();
 	camera->Position.y += distance;
 	camera->invertPitch();
 
 	currentPlane = refractionplane;
 	water->bindRefractionFrameBuffer(refractionplane);
-	DrawObj();
-	DrawTerrain();
-	DrawWater();
+	Draw();
 
 	if (renderSkyBox)
 		skybox->draw();
 	
 	water->unbindFrameBuffer();
 	glDisable(GL_CLIP_DISTANCE0);
+	//glEnable(GL_CLIP_DISTANCE0);
 
 	currentPlane = glm::vec4(0, -1, 0, 100000);
-	DrawObj();
-	DrawTerrain();
+	Draw();
 	DrawWater();
-
-	if (renderSkyBox)
-		skybox->draw();
 
 
 	glfwSwapBuffers(window);
@@ -234,4 +225,14 @@ inline void Renderer::DrawWater()
 	water->shader->setMat4("view", view);
 	water->shader->setMat4("projection", projection);
 	water->draw();
+}
+
+inline void Renderer::Draw()
+{
+	glClearColor(0.3f, 0.2f, 0.2f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	DrawObj();
+	DrawTerrain();
+	if (renderSkyBox)
+		skybox->draw();
 }

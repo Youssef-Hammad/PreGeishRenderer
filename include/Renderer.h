@@ -34,8 +34,8 @@ private:
 	const std::string RO_fShader = "shaders/fragment\ shaders/ObjectFragmentShader.frag";
 	const std::string Ter_vShader = "shaders/vertex\ shaders/TerrainVertexShader.vert";
 	const std::string Ter_fShader = "shaders/fragment\ shaders/TerrainFragmentShader.frag";
-	glm::vec4 reflectionplane = glm::vec4(0, -1, 0, 10);
-	glm::vec4 refractionplane = glm::vec4(0, 1, 0, 3);
+	glm::vec4 reflectionplane = glm::vec4(0, 1, 0, 0);
+	glm::vec4 refractionplane = glm::vec4(0, -1, 0, 0);
 	glm::vec4 currentPlane;
 
 	void processInput(GLFWwindow* window);
@@ -66,6 +66,7 @@ public:
 	inline void DrawTerrain();
 	inline void CalculateFrames();
 	inline void DrawWater();
+	inline void Draw();
 
 	~Renderer();
 };
